@@ -1,0 +1,19 @@
+
+{
+  "name": "SJAM KOTA BHARU - SISTEM SERVIS DAN PUSPAKOM",
+  "short_name": "SJAM SERVIS",
+  "description": "Sistem Pengurusan Servis dan PUSPAKOM Ambulans SJAM Kota Bharu",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b192c",
+  "theme_color": "#0b192c",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
