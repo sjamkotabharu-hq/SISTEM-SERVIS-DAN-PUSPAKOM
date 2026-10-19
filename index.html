@@ -217,7 +217,7 @@ display: block !important;
                         <input type="text" id="globalSearchInput" oninput="handleGlobalSearch(this.value)" placeholder="Cari ambulans, servis..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500 focus:bg-white transition-all">
                     </div>
 
-</div>
+                </div>
             </header>
 
 <!-- SCROLLABLE TAB CONTENTS -->
@@ -348,11 +348,7 @@ display: block !important;
 
 <!-- PENERANGAN RASMI SISTEM -->
         <p class="text-xs text-slate-300 leading-relaxed">
-            SISTEM SERVIS DAN PUSPAKOM.
-            Sistem pengurusan ambulans SJAM Kota Bharu
-            bagi merekod penyelenggaraan kenderaan,
-            memantau jadual pemeriksaan PUSPAKOM
-            serta mengurus kos perkhidmatan.
+         SISTEM SERVIS DAN PUSPAKOM ini adalah Platform pengurusan ambulans SJAM Kota Bharu yang direka untuk memudahkan mereko dan penyelenggaraan, pemantauan jadual pemeriksaan PUSPAKOM, pengurusan kos serta penyediaan laporan secara sistematik, teratur dan efisien.
         </p>
     </div>
 
@@ -364,15 +360,6 @@ display: block !important;
             </span>
             <span class="text-xs font-bold text-gold-400">
                 Standard JPJ / PUSPAKOM
-            </span>
-        </div>
-
-<div class="bg-navy-900/80 p-3 rounded-xl border border-navy-800 flex flex-col gap-1 break-words">
-            <span class="text-xs text-slate-300">
-                Eksport Kalendar (.ics)
-            </span>
-            <span class="text-xs font-bold text-emerald-400">
-                Disokong Penuh
             </span>
         </div>
 
@@ -734,46 +721,46 @@ display: block !important;
                         <input type="date" id="maintNextDate" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
                     </div>
                 </div>
-
+                
 <!-- MUAT NAIK RESIT / INVOIS -->
 <div class="space-y-2">
 
-<label class="block text-xs font-semibold text-slate-700">
+    <label class="block text-xs font-semibold text-slate-700">
         Muat Naik Resit / Invois
         <span class="text-slate-400">(Pilihan)</span>
     </label>
 
-<div class="border-2 border-dashed border-slate-200 rounded-xl p-3 bg-slate-50">
+    <div class="border-2 border-dashed border-slate-200 rounded-xl p-3 bg-slate-50">
 
-<div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-2">
 
-<!-- BUTANG BIRU -->
+            <!-- BUTANG BIRU -->
             <button type="button"
                 onclick="document.getElementById('sjamReceiptCamera').click()"
                 class="bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 px-2 font-semibold text-xs sm:text-sm flex flex-col items-center justify-center gap-2">
 
-<i class="fa-solid fa-camera text-lg"></i>
+                <i class="fa-solid fa-camera text-lg"></i>
                 Ambil Gambar
             </button>
 
-<!-- BUTANG HIJAU -->
+            <!-- BUTANG HIJAU -->
             <button type="button"
                 onclick="document.getElementById('sjamReceiptGallery').click()"
                 class="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-3 px-2 font-semibold text-xs sm:text-sm flex flex-col items-center justify-center gap-2">
 
-<i class="fa-solid fa-images text-lg"></i>
+                <i class="fa-solid fa-images text-lg"></i>
                 Pilih Galeri
             </button>
 
-</div>
+        </div>
 
-<p class="text-[11px] text-slate-400 text-center mt-3">
+        <p class="text-[11px] text-slate-400 text-center mt-3">
             Format: JPG, PNG atau PDF (Maksimum 10 MB)
         </p>
 
-</div>
+    </div>
 
-<!-- INPUT KAMERA -->
+    <!-- INPUT KAMERA -->
     <input type="file"
         id="sjamReceiptCamera"
         accept="image/*"
@@ -781,26 +768,26 @@ display: block !important;
         class="hidden"
         onchange="sjamPreviewReceipt(this)">
 
-<!-- INPUT GALERI -->
+    <!-- INPUT GALERI -->
     <input type="file"
         id="sjamReceiptGallery"
         accept="image/*,.pdf,application/pdf"
         class="hidden"
         onchange="sjamPreviewReceipt(this)">
 
-<!-- PRATONTON -->
+    <!-- PRATONTON -->
     <div id="sjamReceiptPreview"
         class="hidden border border-emerald-200 bg-emerald-50 rounded-xl p-3">
 
-<p class="text-xs font-semibold text-slate-700 mb-2">
+        <p class="text-xs font-semibold text-slate-700 mb-2">
             Pratonton Resit
         </p>
 
-<img id="sjamReceiptImage"
+        <img id="sjamReceiptImage"
             alt="Pratonton resit"
             class="hidden w-full max-h-48 object-contain rounded-lg bg-white mb-3">
 
-<div id="sjamReceiptPDF"
+        <div id="sjamReceiptPDF"
             class="hidden text-center py-4">
             <i class="fa-solid fa-file-pdf text-3xl text-red-500"></i>
             <p class="text-xs text-slate-600 mt-2">
@@ -808,21 +795,21 @@ display: block !important;
             </p>
         </div>
 
-<div class="flex items-center justify-between gap-2">
+        <div class="flex items-center justify-between gap-2">
 
-<p id="sjamReceiptFilename"
+            <p id="sjamReceiptFilename"
                 class="text-xs font-semibold text-emerald-700 truncate min-w-0">
             </p>
 
-<button type="button"
+            <button type="button"
                 onclick="sjamClearReceipt()"
                 class="text-xs font-semibold text-red-600 shrink-0">
                 Buang
             </button>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
 </div>
 
@@ -1865,6 +1852,7 @@ tbody.appendChild(row);
     };
 </script>
 
+
 <!-- FUNGSI PRATONTON RESIT -->
 <script>
 
@@ -1964,6 +1952,7 @@ function sjamPreviewReceipt(input) {
 }
 
 </script>
+
 
 <!-- JAM DIGITAL MASA MALAYSIA -->
 <script>
@@ -2427,3 +2416,4 @@ window.savePuspakom = async function(event) {
 </script>
 </body>
 </html>
+
