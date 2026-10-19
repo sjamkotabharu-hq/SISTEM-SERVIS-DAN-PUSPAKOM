@@ -1,0 +1,2429 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SJAM KOTA BHARU — SISTEM SERVIS DAN PUSPAKOM</title>
+
+<!-- Tailwind CSS for modern responsive utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for professional UI icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Outfit for corporate luxury aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            800: '#102a43',
+                            900: '#0b192c',
+                            950: '#060f1b'
+                        },
+                        gold: {
+                            400: '#f6ad55',
+                            500: '#d4af37',
+                            600: '#b89728',
+                            700: '#997d1e'
+                        },
+                        champagne: {
+                            100: '#fbf7ee',
+                            200: '#f4ebd8',
+                            500: '#e6d5b8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+
+@page {
+        size: A4;
+        margin: 12mm;
+    }
+
+html, body {
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        background: white !important;
+    }
+
+body > div.flex.h-screen,
+body > div.flex > div,
+main {        
+display: block !important;
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+#sidebar,
+    header,
+    .no-print {
+        display: none !important;
+    }
+
+#printableArea {
+        position: static !important;
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+    }
+
+#tab-analytics > div:last-child {
+        display: none !important;
+    }
+}
+
+@media (min-width: 1280px) {
+    #sidebar.sidebar-collapsed {
+        display: none !important;
+    }
+}    
+</style>
+</head>
+<body class="bg-navy-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+<div class="flex h-screen h-[100dvh] overflow-hidden">
+
+<!-- SIDEBAR NAVIGATION -->
+        <aside id="sidebar" class="bg-navy-950 text-slate-300 w-64 flex-shrink-0 hidden xl:flex flex-col border-r border-navy-800 transition-all duration-300 z-30">
+            <div class="relative p-6 pr-10 border-b border-navy-800/80 flex items-center gap-3">
+
+<div class="w-10 h-10 shrink-0 rounded-xl overflow-hidden shadow-lg shadow-gold-500/20">
+    <img
+        src="https://drive.google.com/thumbnail?id=1rnQrGdZHxJ2kQSfMXMRQwURHS9hpF4pa&sz=w400"
+        alt="Logo SJAM Kota Bharu"
+        class="w-full h-full object-cover"
+    >
+</div>
+
+<div class="min-w-0">
+        <h1 class="font-heading font-bold text-white text-sm sm:text-base tracking-wide leading-tight">
+    SJAM <span class="text-gold-400">KOTA BHARU</span>
+</h1>
+
+<p class="text-[10px] text-slate-400 font-medium leading-snug mt-1">
+    SISTEM SERVIS DAN PUSPAKOM
+</p>    
+</div>
+
+<button type="button"
+        onclick="toggleMobileSidebar()"
+        aria-label="Tutup Sidebar"
+        class="absolute top-2 right-2 z-10 p-2 text-white hover:text-gold-400">
+        <i class="fa-solid fa-bars text-xl"></i>
+    </button>
+
+</div>
+            <!-- Navigation Links -->
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all bg-gold-500/10 text-gold-400 border border-gold-500/20">
+                    <i class="fa-solid fa-chart-pie w-5 text-center"></i> Dashboard Utama               
+ </button>
+                <button onclick="switchTab('calendar')" id="nav-calendar" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-navy-900 hover:text-white">
+                    <i class="fa-solid fa-calendar-days w-5 text-center"></i> Smart Calendar
+                </button>
+                <button onclick="switchTab('ambulances')" id="nav-ambulances" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-navy-900 hover:text-white">
+                    <i class="fa-solid fa-truck-medical w-5 text-center"></i> Tambah Ambulans                
+</button>
+                <button onclick="switchTab('maintenance')" id="nav-maintenance" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-navy-900 hover:text-white">
+                    <i class="fa-solid fa-wrench w-5 text-center"></i>
+<span class="text-xs whitespace-nowrap">Rekod Penyelenggaraan</span>                
+</button>
+                <button onclick="switchTab('puspakom')" id="nav-puspakom" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-navy-900 hover:text-white">
+                    <i class="fa-solid fa-shield-halved w-5 text-center"></i> PUSPAKOM                
+</button>
+                <button onclick="switchTab('analytics')" id="nav-analytics" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-navy-900 hover:text-white">
+                    <i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i> Kos dan Laporan
+                </button>
+            </nav>
+
+<!-- Fleet Status Quick Widget in Sidebar -->
+                    <!-- LOGO DAN HAK CIPTA SJAM -->
+<div class="mt-auto px-4 py-5 border-t border-navy-800 text-center">
+
+<!-- LOGO SJAM DARI GOOGLE DRIVE -->
+    <img
+        src="https://drive.google.com/thumbnail?id=1zSB87Iwg4Y4ExEJDEvKkBwclemv7XhJX&sz=w400"
+        alt="Logo St John Ambulans Malaysia"
+        class="w-20 h-20 mx-auto rounded-full bg-white object-contain p-1"
+        loading="lazy"
+    >
+
+<!-- HAK CIPTA BERWARNA MERAH -->
+    <p class="mt-3 text-[10px] font-semibold text-red-400 leading-relaxed text-center">
+    © 2026 ST JOHN AMBULANS MALAYSIA (SJAM)
+    KAWASAN KELANTAN UTARA,
+    <span class="block text-center whitespace-nowrap">
+        KOTA BHARU
+    </span>
+    <span class="block text-center">
+        Hak Cipta Terpelihara.
+    </span>
+</p>
+
+</div>
+
+</aside>
+
+<!-- MAIN CONTENT AREA -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+<!-- TOP NAVBAR -->
+            <header class="bg-white border-b border-slate-200 min-h-16 flex flex-wrap xl:flex-nowrap items-center justify-between gap-3 px-3 sm:px-5 py-3 z-20 shadow-sm">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleMobileSidebar()" class="text-slate-600 hover:text-navy-900 text-xl focus:outline-none">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div>
+                        <h2 id="pageTitle" class="font-heading font-bold text-navy-950 text-xl">Dashboard Utama</h2>
+                        <p id="pageSubtitle" class="text-xs text-slate-500 hidden sm:block">Ringkasan masa nyata jadual servis & pemeriksaan PUSPAKOM ambulans.</p>
+                    </div>
+                </div>
+
+<!-- Global Search & Quick Actions -->
+                <div class="flex items-center gap-3">
+                    <div class="relative hidden md:block w-40 2xl:w-64">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-search text-xs"></i>
+                        </span>
+                        <input type="text" id="globalSearchInput" oninput="handleGlobalSearch(this.value)" placeholder="Cari ambulans, servis..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500 focus:bg-white transition-all">
+                    </div>
+
+</div>
+            </header>
+
+<!-- SCROLLABLE TAB CONTENTS -->
+            <main class="flex-1 min-w-0 overflow-x-hidden overflow-y-auto p-3 sm:p-5 xl:p-6 bg-slate-50/50">
+                <div id="printableArea" class="max-w-7xl mx-auto space-y-6">
+
+<!-- TAB 1: EXECUTIVE DASHBOARD -->
+                    <div id="tab-dashboard" class="tab-content space-y-6">
+
+<!-- Alert Banner for Urgent Tasks -->
+                        <div id="urgentAlertBanner" class="hidden bg-red-50 border-l-4 border-red-500 p-4 rounded-xl shadow-sm flex items-start justify-between">
+                            <div class="flex items-start gap-3">
+                                <div class="text-red-500 text-xl mt-0.5"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                                <div>
+                                    <h3 class="font-bold text-red-900 text-sm">Amaran Kritikal & Tertunggak!</h3>
+                                    <p id="urgentAlertText" class="text-xs text-red-700 mt-1">Terdapat tarikh servis atau PUSPAKOM yang telah tamat tempoh atau memerlukan perhatian segera.</p>
+                                </div>
+                            </div>
+                            <button onclick="switchTab('calendar')" class="text-xs font-semibold bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1.5 rounded-lg transition-all">Semak Kalendar</button>
+                        </div>
+
+<!-- JAM DAN TARIKH DASHBOARD UTAMA -->
+<div class="no-print bg-gradient-to-r from-navy-900 to-navy-950 text-white rounded-2xl shadow-lg p-5 sm:p-6">
+
+<div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8">
+
+<!-- JAM DIGITAL -->
+        <div id="sjamLiveClock"
+             class="font-heading font-bold text-4xl sm:text-5xl tracking-wide tabular-nums">
+            --:--:--
+        </div>
+
+<!-- TARIKH DAN ZON WAKTU -->
+        <div>
+
+<h3 id="sjamLiveDate"
+                class="font-heading font-semibold text-lg sm:text-xl">
+                Memuatkan tarikh...
+            </h3>
+
+<p class="text-xs sm:text-sm text-slate-400 mt-1">
+                Zon Waktu: Asia/Kuala_Lumpur (MYT)
+            </p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- KPI Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-4">
+                            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Jumlah Ambulans</p>
+                                    <h3 id="kpiTotalAmbulances" class="text-3xl font-heading font-bold text-navy-950 mt-1">0</h3>
+                                    <p class="text-xs text-emerald-600 font-medium mt-1"><i class="fa-solid fa-circle-check"></i> Rekod ambulans berdaftar</p>
+                                </div>
+                                <div class="w-14 h-14 rounded-2xl bg-navy-50 text-navy-900 flex items-center justify-center text-xl shadow-inner">
+                                    <i class="fa-solid fa-ambulance"></i>
+                                </div>
+                            </div>
+
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Servis Seterusnya</p>
+                                    <h3 id="kpiNextService" class="text-3xl font-heading font-bold text-blue-600 mt-1">0</h3>
+                                    <p class="text-xs text-slate-500 font-medium mt-1">Dalam masa 30 hari</p>
+                                </div>
+                                <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shadow-inner">
+                                    <i class="fa-solid fa-wrench"></i>
+                                </div>
+                            </div>
+
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Jangka PUSPAKOM</p>
+                                    <h3 id="kpiNextPuspakom" class="text-3xl font-heading font-bold text-gold-600 mt-1">0</h3>
+                                    <p class="text-xs text-slate-500 font-medium mt-1">Pemeriksaan berjadual</p>
+                                </div>
+                                <div class="w-14 h-14 rounded-2xl bg-gold-50 text-gold-600 flex items-center justify-center text-xl shadow-inner">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                </div>
+                            </div>
+
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Tindakan Tertunggak</p>
+                                    <h3 id="kpiOverdue" class="text-3xl font-heading font-bold text-red-600 mt-1">0</h3>
+                                    <p class="text-xs text-red-600 font-medium mt-1">Perlukan perhatian</p>
+                                </div>
+                                <div class="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center text-xl shadow-inner">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                </div>
+                            </div>
+                        </div>
+
+<!-- Smart Countdown & Upcoming Timeline Section -->
+                        <div class="grid grid-cols-1 2xl:grid-cols-3 gap-5">
+
+<!-- Smart Countdown Quick List (Top Upcoming) -->
+                            <div class="2xl:col-span-2 min-w-0 bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex flex-col">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div>
+                                        <h3 class="font-heading font-bold text-navy-950 text-lg">Smart Countdown & Timeline</h3>
+                                        <p class="text-xs text-slate-500">Aktiviti penyelenggaraan & PUSPAKOM terdekat diatur mengikut urutan masa.</p>
+                                    </div>
+                                    <button onclick="switchTab('calendar')" class="text-xs font-semibold text-gold-600 hover:text-gold-700">Lihat Kalendar →</button>
+                                </div>
+
+<div id="smartCountdownList" class="space-y-3 overflow-y-auto max-h-[380px] pr-1">
+                                    <!-- Populated dynamically via JS -->
+                                </div>
+                            </div>
+
+<!-- Fleet Quick Status Card -->
+
+<div class="relative bg-gradient-to-br from-navy-900 to-navy-950 text-white rounded-2xl shadow-lg p-4 sm:p-5 flex flex-col justify-between">
+
+<div class="absolute top-4 right-4">
+    <i class="fa-solid fa-shield text-gold-400"></i>
+</div>
+
+<!-- NAMA RASMI SISTEM -->
+        <h3 class="font-heading font-bold text-xl mb-1">
+            SJAM KOTA BHARU
+        </h3>
+
+<!-- PENERANGAN RASMI SISTEM -->
+        <p class="text-xs text-slate-300 leading-relaxed">
+            SISTEM SERVIS DAN PUSPAKOM.
+            Sistem pengurusan ambulans SJAM Kota Bharu
+            bagi merekod penyelenggaraan kenderaan,
+            memantau jadual pemeriksaan PUSPAKOM
+            serta mengurus kos perkhidmatan.
+        </p>
+    </div>
+
+<div class="space-y-4 my-6">
+
+<div class="bg-navy-900/80 p-3 rounded-xl border border-navy-800 flex flex-col gap-1 break-words">
+            <span class="text-xs text-slate-300">
+                Format Tarikh PUSPAKOM
+            </span>
+            <span class="text-xs font-bold text-gold-400">
+                Standard JPJ / PUSPAKOM
+            </span>
+        </div>
+
+<div class="bg-navy-900/80 p-3 rounded-xl border border-navy-800 flex flex-col gap-1 break-words">
+            <span class="text-xs text-slate-300">
+                Eksport Kalendar (.ics)
+            </span>
+            <span class="text-xs font-bold text-emerald-400">
+                Disokong Penuh
+            </span>
+        </div>
+
+</div>
+
+<div class="space-y-2">
+
+<button onclick="openAddMaintenanceModal()"
+            class="w-full bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold py-2.5 px-4 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2">
+
+<i class="fa-solid fa-wrench"></i>
+            Rekod Servis Baharu
+
+</button>
+
+<button onclick="window.print()"
+            class="w-full bg-navy-800 hover:bg-navy-700 text-white font-medium py-2.5 px-4 rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+
+<i class="fa-solid fa-print"></i>
+            Cetak Laporan Eksekutif
+
+</button>
+
+</div>
+
+</div>
+                        </div>
+
+</div>
+
+<!-- TAB 2: SMART INTERACTIVE CALENDAR -->
+                    <div id="tab-calendar" class="tab-content hidden space-y-6">
+                        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+
+<!-- Calendar Controls Header -->
+                            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+                                <div class="flex items-center gap-3">
+                                    <h3 id="calendarMonthTitle" class="font-heading font-bold text-navy-950 text-xl">Oktober 2026</h3>
+                                    <div class="flex items-center bg-slate-100 rounded-xl p-1 border border-slate-200">
+                                        <button onclick="changeMonth(-1)" class="px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-white rounded-lg transition-all"><i class="fa-solid fa-chevron-left"></i></button>
+                                        <button onclick="goToCurrentMonth()" class="px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-white rounded-lg transition-all">Hari Ini</button>
+                                        <button onclick="changeMonth(1)" class="px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-white rounded-lg transition-all"><i class="fa-solid fa-chevron-right"></i></button>
+                                    </div>
+                                </div>
+
+<!-- Legend & Export -->
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <div class="flex items-center gap-2 text-xs font-medium text-slate-600">
+                                        <span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span> Servis
+                                        <span class="w-3 h-3 rounded-full bg-gold-500 inline-block ml-2"></span> PUSPAKOM
+                                        <span class="w-3 h-3 rounded-full bg-red-500 inline-block ml-2"></span> Tertunggak
+                                    </div>
+                                </div>
+                            </div>
+
+<!-- Interactive Calendar Grid -->
+                            <div class="grid grid-cols-7 min-w-[630px] sm:min-w-0 gap-px bg-slate-200 rounded-xl overflow-hidden border border-slate-200" id="calendarGridContainer">
+                                <!-- Days Header -->
+                                <div class="bg-slate-100 py-2.5 text-center text-xs font-bold text-slate-600">Ahad</div>
+                                <div class="bg-slate-100 py-2.5 text-center text-xs font-bold text-slate-600">Isnin</div>
+                                <div class="bg-slate-100 py-2.5 text-center text-xs font-bold text-slate-600">Selasa</div>
+                                <div class="bg-slate-100 py-2.5 text-center text-xs font-bold text-slate-600">Rabu</div>
+                                <div class="bg-slate-100 py-2.5 text-center text-xs font-bold text-slate-600">Khamis</div>
+                                <div class="bg-slate-100 py-2.5 text-center text-xs font-bold text-slate-600">Jumaat</div>
+                                <div class="bg-slate-100 py-2.5 text-center text-xs font-bold text-slate-600">Sabtu</div>
+                                <!-- Calendar Days Cells injected dynamically -->
+                            </div>
+
+</div>
+
+<!-- Selected Date Details Drawer / Card -->
+                        <div id="calendarDayDetails" class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 hidden">
+                            <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+                                <h4 id="selectedDateTitle" class="font-heading font-bold text-navy-950 text-base">Tarikh: 15 Okt 2026</h4>
+                                <button onclick="closeDayDetails()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                            <div id="selectedDateContent" class="space-y-3">
+                                <!-- Populated on date click -->
+                            </div>
+                        </div>
+                    </div>
+
+<!-- TAB 3: AMBULANCE MANAGEMENT -->
+                    <div id="tab-ambulances" class="tab-content hidden space-y-6">
+                        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+                            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+                                <div>
+                                    <h3 class="font-heading font-bold text-navy-950 text-lg">Senarai Ambulans</h3>
+                                    <p class="text-xs text-slate-500">Urus nombor pendaftaran, model, lokasi bertugas dan jadual.</p>
+                                </div>
+                                <button onclick="openAddAmbulanceModal()" class="bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold px-4 py-2 rounded-xl text-xs shadow-sm flex items-center gap-2 transition-all">
+                                    <i class="fa-solid fa-plus text-xs"></i> Tambah Ambulans Baru
+                                </button>
+                            </div>
+
+<!-- Ambulance Table -->
+                            <div class="overflow-x-auto">
+                                <table class="w-full min-w-[720px] text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-200 text-xs font-bold text-slate-500 uppercase bg-slate-50/70">
+                                            <th class="py-3.5 px-4 rounded-l-xl">No. Pendaftaran</th>
+                                            <th class="py-3.5 px-4">Model Ambulans</th>
+                                            <th class="py-3.5 px-4">Lokasi / Stesen</th>
+                                            <th class="py-3.5 px-4">Servis Seterusnya</th>
+                                            <th class="py-3.5 px-4">Tarikh PUSPAKOM</th>
+                                            <th class="py-3.5 px-4 text-right rounded-r-xl">Tindakan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ambulanceTableBody" class="divide-y divide-slate-100 text-sm">
+                                        <!-- Populated via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+<!-- TAB 4: MAINTENANCE RECORDS -->
+                    <div id="tab-maintenance" class="tab-content hidden space-y-6">
+                        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+                            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+                                <div>
+                                    <h3 class="font-heading font-bold text-navy-950 text-lg">Rekod Penyelenggaraan & Servis</h3>
+                                    <p class="text-xs text-slate-500">Sejarah servis terakhir, odometer, kos serta catatan juruteknik.</p>
+                                </div>
+                                <button onclick="openAddMaintenanceModal()" class="bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold px-4 py-2 rounded-xl text-xs shadow-sm flex items-center gap-2 transition-all">
+                                    <i class="fa-solid fa-wrench text-xs"></i> Tambah Rekod Servis
+                                </button>
+                            </div>
+
+<div class="overflow-x-auto">
+                                <table class="w-full min-w-[900px] text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-200 text-xs font-bold text-slate-500 uppercase bg-slate-50/70">
+                                            <th class="py-3.5 px-4 rounded-l-xl">Ambulans</th>
+                                            <th class="py-3.5 px-4">Jenis Servis</th>
+                                            <th class="py-3.5 px-4">Tarikh Servis</th>
+                                            <th class="py-3.5 px-4">Odometer (KM)</th>
+                                            <th class="py-3.5 px-4">Kos (RM)</th>
+                                            <th class="py-3.5 px-4">Servis Seterusnya</th>
+                                            <th class="py-3.5 px-4 text-right rounded-r-xl">Tindakan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="maintenanceTableBody" class="divide-y divide-slate-100 text-sm">
+                                        <!-- Populated via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+<!-- TAB 5: PUSPAKOM TRACKER -->
+                    <div id="tab-puspakom" class="tab-content hidden space-y-6">
+                        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+                            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+                                <div>
+                                    <h3 class="font-heading font-bold text-navy-950 text-lg">Jadual & Pemeriksaan PUSPAKOM</h3>
+                                    <p class="text-xs text-slate-500">Pemeriksaan berkala kenderaan berkanun perubatan.</p>
+                                </div>
+                                <button onclick="openAddPuspakomModal()" class="bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold px-4 py-2 rounded-xl text-xs shadow-sm flex items-center gap-2 transition-all">
+                                    <i class="fa-solid fa-shield-halved text-xs"></i> Kemas Kini PUSPAKOM
+                                </button>
+                            </div>
+
+<div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-200 text-xs font-bold text-slate-500 uppercase bg-slate-50/70">
+                                            <th class="py-3.5 px-4 rounded-l-xl">Ambulans</th>
+                                            <th class="py-3.5 px-4">Pemeriksaan Terakhir</th>
+                                            <th class="py-3.5 px-4">Tarikh Perlu Masuk PUSPAKOM</th>
+                                            <th class="py-3.5 px-4">Status / Kiraan Hari</th>                                        
+    <th class="py-3.5 px-4">Catatan</th>
+                                            <th class="py-3.5 px-4 text-right rounded-r-xl">Tindakan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="puspakomTableBody" class="divide-y divide-slate-100 text-sm">
+                                        <!-- Populated via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+<!-- TAB 6: COST & ANALYTICS -->
+<div id="tab-analytics" class="tab-content hidden space-y-6">
+
+<!-- TARIKH LAPORAN -->
+    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+
+<h3 class="font-heading font-bold text-navy-950 text-lg">
+            Laporan Penyelenggaraan Ambulans
+        </h3>
+
+<p id="analyticsReportDate" class="text-xs text-slate-500 mt-1"></p>
+
+<div class="no-print flex flex-wrap gap-3 mt-4">
+
+<div>
+                <label class="block text-xs font-semibold mb-1">
+                    Dari Tarikh
+                </label>
+                <input type="date" id="analyticsStartDate"
+                    onchange="renderAnalytics()"
+                    class="border rounded-lg px-3 py-2 text-sm">
+            </div>
+
+<div>
+                <label class="block text-xs font-semibold mb-1">
+                    Hingga Tarikh
+                </label>
+                <input type="date" id="analyticsEndDate"
+                    onchange="renderAnalytics()"
+                    class="border rounded-lg px-3 py-2 text-sm">
+            </div>
+
+<button type="button"
+                onclick="document.getElementById('analyticsStartDate').value='';document.getElementById('analyticsEndDate').value='';renderAnalytics()"
+                class="self-end bg-slate-100 px-4 py-2 rounded-lg text-xs font-semibold">
+                Semua Tarikh
+            </button>
+
+</div>
+
+<p id="analyticsPeriodLabel"
+            class="text-xs text-slate-500 mt-3">
+            Tempoh: Semua Tarikh
+        </p>
+
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Jumlah Kos Penyelenggaraan</p>
+                                <h3 id="analyticsTotalCost" class="text-3xl font-heading font-bold text-navy-950 mt-1">RM 0.00</h3>
+                                <p class="text-xs text-slate-500 mt-1">Keseluruhan kos servis armada</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Purata Kos Seunit</p>
+                                <h3 id="analyticsAvgCost" class="text-3xl font-heading font-bold text-gold-600 mt-1">RM 0.00</h3>
+                                <p class="text-xs text-slate-500 mt-1">Bagi setiap kenderaan</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Jumlah Servis Direkod</p>
+                                <h3 id="analyticsTotalServices" class="text-3xl font-heading font-bold text-blue-600 mt-1">0</h3>
+                                <p class="text-xs text-slate-500 mt-1">Sesi penyelenggaraan</p>
+                            </div>
+                        </div>
+
+<!-- ANALISIS MENGIKUT AMBULANS -->
+<div class="space-y-4">
+
+<h3 class="font-heading font-bold text-navy-950 text-lg">
+        Analisis Mengikut Ambulans
+    </h3>
+
+<div id="analyticsAmbulanceCards"
+         class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    </div>
+
+</div>
+
+<!-- CETAK LAPORAN RASMI -->
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+
+<div class="flex flex-wrap gap-3">
+
+<button onclick="window.print()" class="bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold px-4 py-2.5 rounded-xl text-xs transition-all flex items-center gap-2">
+
+<i class="fa-solid fa-print"></i>
+            Cetak Laporan Rasmi
+
+</button>
+
+</div>
+
+</div>                   
+ </div>
+
+</div>
+            </main>
+        </div>
+    </div>
+
+<!-- MODALS FOR ADDING/EDITING -->
+
+<!-- Modal: Add / Edit Ambulance -->
+    <div id="ambulanceModal" class="fixed inset-0 bg-navy-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full max-h-[90dvh] overflow-y-auto p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 id="ambulanceModalTitle" class="font-heading font-bold text-navy-950 text-lg">Tambah Ambulans Baharu</h3>
+                <button onclick="closeModal('ambulanceModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="ambulanceForm" onsubmit="saveAmbulance(event)" class="space-y-4">
+                <input type="hidden" id="editAmbulanceId">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">No. Pendaftaran</label>
+                    <input type="text" id="ambRegNo" required placeholder="Contoh: WX 4521 A" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Model Ambulans</label>
+                    <input type="text" id="ambModel" required placeholder="Contoh: Toyota HiAce High Roof" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Lokasi Bertugas</label>
+                    <input type="text" id="ambLocation" required placeholder="Contoh: Hotspot / Lokasi Base" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Tarikh Servis Seterusnya</label>
+                    <input type="date" id="ambNextService" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Tarikh Masuk PUSPAKOM</label>
+                    <input type="date" id="ambNextPuspakom" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
+                </div>
+                <div class="flex justify-end gap-2 pt-3">
+                    <button type="button" onclick="closeModal('ambulanceModal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-all">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-gold-500 hover:bg-gold-600 text-navy-950 text-xs font-semibold rounded-xl transition-all shadow-sm">Simpan Rekod</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<!-- Modal: Add / Edit Maintenance -->
+    <div id="maintenanceModal" class="fixed inset-0 bg-navy-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full max-h-[90dvh] overflow-y-auto p-6 shadow-2xl border border-slate-100 space-y-4">       
+     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 id="maintenanceModalTitle" class="font-heading font-bold text-navy-950 text-lg">Rekod Servis Baharu</h3>
+                <button onclick="closeModal('maintenanceModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="maintenanceForm" onsubmit="saveMaintenance(event)" class="space-y-4">
+                <input type="hidden" id="editMaintId">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Pilih Ambulans</label>
+                    <select id="maintAmbulanceId" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Jenis Servis</label>
+                    <input type="text" id="maintType" required placeholder="Contoh: Servis Berkala 10,000KM / Tukar Brek" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tarikh Servis</label>
+                        <input type="date" id="maintDate" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Odometer (KM)</label>
+                        <input type="number" id="maintOdometer" required placeholder="45000" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Kos (RM)</label>
+                        <input type="number" step="0.01" id="maintCost" required placeholder="350.00" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Servis Seterusnya</label>
+                        <input type="date" id="maintNextDate" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
+                    </div>
+                </div>
+
+<!-- MUAT NAIK RESIT / INVOIS -->
+<div class="space-y-2">
+
+<label class="block text-xs font-semibold text-slate-700">
+        Muat Naik Resit / Invois
+        <span class="text-slate-400">(Pilihan)</span>
+    </label>
+
+<div class="border-2 border-dashed border-slate-200 rounded-xl p-3 bg-slate-50">
+
+<div class="grid grid-cols-2 gap-2">
+
+<!-- BUTANG BIRU -->
+            <button type="button"
+                onclick="document.getElementById('sjamReceiptCamera').click()"
+                class="bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 px-2 font-semibold text-xs sm:text-sm flex flex-col items-center justify-center gap-2">
+
+<i class="fa-solid fa-camera text-lg"></i>
+                Ambil Gambar
+            </button>
+
+<!-- BUTANG HIJAU -->
+            <button type="button"
+                onclick="document.getElementById('sjamReceiptGallery').click()"
+                class="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-3 px-2 font-semibold text-xs sm:text-sm flex flex-col items-center justify-center gap-2">
+
+<i class="fa-solid fa-images text-lg"></i>
+                Pilih Galeri
+            </button>
+
+</div>
+
+<p class="text-[11px] text-slate-400 text-center mt-3">
+            Format: JPG, PNG atau PDF (Maksimum 10 MB)
+        </p>
+
+</div>
+
+<!-- INPUT KAMERA -->
+    <input type="file"
+        id="sjamReceiptCamera"
+        accept="image/*"
+        capture="environment"
+        class="hidden"
+        onchange="sjamPreviewReceipt(this)">
+
+<!-- INPUT GALERI -->
+    <input type="file"
+        id="sjamReceiptGallery"
+        accept="image/*,.pdf,application/pdf"
+        class="hidden"
+        onchange="sjamPreviewReceipt(this)">
+
+<!-- PRATONTON -->
+    <div id="sjamReceiptPreview"
+        class="hidden border border-emerald-200 bg-emerald-50 rounded-xl p-3">
+
+<p class="text-xs font-semibold text-slate-700 mb-2">
+            Pratonton Resit
+        </p>
+
+<img id="sjamReceiptImage"
+            alt="Pratonton resit"
+            class="hidden w-full max-h-48 object-contain rounded-lg bg-white mb-3">
+
+<div id="sjamReceiptPDF"
+            class="hidden text-center py-4">
+            <i class="fa-solid fa-file-pdf text-3xl text-red-500"></i>
+            <p class="text-xs text-slate-600 mt-2">
+                Dokumen PDF dipilih
+            </p>
+        </div>
+
+<div class="flex items-center justify-between gap-2">
+
+<p id="sjamReceiptFilename"
+                class="text-xs font-semibold text-emerald-700 truncate min-w-0">
+            </p>
+
+<button type="button"
+                onclick="sjamClearReceipt()"
+                class="text-xs font-semibold text-red-600 shrink-0">
+                Buang
+            </button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CATATAN / JURUTEKNIK ASAL DIKEKALKAN -->
+<div>
+    <label class="block text-xs font-semibold text-slate-700 mb-1">Catatan / Juruteknik</label>
+    <textarea id="maintNotes" rows="2" placeholder="Catatan penyelenggaraan..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500"></textarea>
+</div>
+                <div class="flex justify-end gap-2 pt-3">
+                    <button type="button" onclick="closeModal('maintenanceModal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-all">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-gold-500 hover:bg-gold-600 text-navy-950 text-xs font-semibold rounded-xl transition-all shadow-sm">Simpan Servis</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<!-- MODAL KEMAS KINI PUSPAKOM -->
+<div id="puspakomModal"
+     class="fixed inset-0 bg-navy-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+
+<div class="bg-white rounded-2xl max-w-md w-full max-h-[90dvh] overflow-y-auto p-5 sm:p-6 shadow-2xl space-y-4">
+
+<div class="flex items-center justify-between border-b pb-3">
+            <h3 class="font-heading font-bold text-navy-950 text-lg">
+                Kemas Kini PUSPAKOM
+            </h3>
+
+<button type="button"
+                    onclick="closeModal('puspakomModal')">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+<form id="puspakomForm"
+              onsubmit="savePuspakom(event)"
+              class="space-y-4">
+
+<div>
+                <label class="block text-xs font-semibold mb-1">
+                    Pilih Ambulans
+                </label>
+
+<select id="puspAmbulanceId"
+                        onchange="loadPuspakomDetails()"
+                        required
+                        class="w-full px-3 py-2 border rounded-xl text-sm">
+                </select>
+            </div>
+
+<div>
+                <label class="block text-xs font-semibold mb-1">
+                    Tarikh Pemeriksaan Terakhir
+                </label>
+
+<input type="date"
+                       id="puspLastDate"
+                       class="w-full px-3 py-2 border rounded-xl text-sm">
+            </div>
+
+<div>
+                <label class="block text-xs font-semibold mb-1">
+                    Tarikh PUSPAKOM Seterusnya
+                </label>
+
+<input type="date"
+                       id="puspNextDate"
+                       required
+                       class="w-full px-3 py-2 border rounded-xl text-sm">
+            </div>
+
+<div>
+                <label class="block text-xs font-semibold mb-1">
+                    Catatan Pemeriksaan
+                </label>
+
+<textarea id="puspNotes"
+                          rows="3"
+                          placeholder="Catatan PUSPAKOM..."
+                          class="w-full px-3 py-2 border rounded-xl text-sm"></textarea>
+            </div>
+
+<div class="flex justify-end gap-2 pt-3">
+                <button type="button"
+                        onclick="closeModal('puspakomModal')"
+                        class="px-4 py-2 bg-slate-100 rounded-xl text-xs font-semibold">
+                    Batal
+                </button>
+
+<button type="submit"
+                        class="px-4 py-2 bg-gold-500 text-navy-950 rounded-xl text-xs font-semibold">
+                    Simpan PUSPAKOM
+                </button>
+            </div>
+
+</form>
+    </div>
+</div>
+
+<!-- Modal: Custom Message Box (No alert() used) -->
+    <div id="messageModal" class="fixed inset-0 bg-navy-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 text-center space-y-4">
+            <div id="msgModalIcon" class="w-12 h-12 rounded-full bg-gold-100 text-gold-600 flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <h4 id="msgModalTitle" class="font-heading font-bold text-navy-950 text-lg">Makluman Sistem</h4>
+            <p id="msgModalText" class="text-xs text-slate-600 leading-relaxed">Mesej sistem di sini.</p>
+            <button onclick="closeModal('messageModal')" class="w-full py-2.5 bg-navy-900 hover:bg-navy-800 text-white font-medium text-xs rounded-xl transition-all">Faham</button>
+        </div>
+    </div>
+
+<!-- JAVASCRIPT LOGIC -->
+<script>
+
+    
+let ambulances = [];
+let maintenanceRecords = [];
+
+window.receiveCloudData = function(type, records) {
+    if (type === 'ambulances') {
+        ambulances = records;
+    }
+
+    if (type === 'maintenanceRecords') {
+        maintenanceRecords = records;
+    }
+
+    renderAll();
+};
+    let currentCalendarDate = new Date();
+
+    
+function saveData() {
+    showMessage(
+        'Firebase Belum Bersedia',
+        'Rekod belum disimpan. Sila periksa sambungan Firebase.',
+        'error'
+    );
+
+    throw new Error('Firebase belum tersedia');
+}
+
+
+        function showMessage(title, text, type = 'info') {
+            document.getElementById('msgModalTitle').innerText = title;
+            document.getElementById('msgModalText').innerText = text;
+            const iconEl = document.getElementById('msgModalIcon');
+            if (type === 'success') {
+                iconEl.className = 'w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-xl';
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+            } else if (type === 'error') {
+                iconEl.className = 'w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto text-xl';
+                iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            } else {
+                iconEl.className = 'w-12 h-12 rounded-full bg-gold-100 text-gold-600 flex items-center justify-center mx-auto text-xl';
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+            }
+            document.getElementById('messageModal').classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function toggleMobileSidebar() {
+    const sidebar = document.getElementById('sidebar');
+
+    if (window.innerWidth >= 1280) {
+        sidebar.classList.toggle('sidebar-collapsed');
+        return;
+    }
+
+    sidebar.classList.toggle('hidden');
+    sidebar.classList.toggle('flex');
+    sidebar.classList.toggle('fixed');
+    sidebar.classList.toggle('inset-y-0');
+    sidebar.classList.toggle('left-0');
+    sidebar.classList.toggle('z-50');
+}
+
+        function switchTab(tabName) {
+            const tabs = ['dashboard', 'calendar', 'ambulances', 'maintenance', 'puspakom', 'analytics'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                const navBtn = document.getElementById(`nav-${t}`);
+                if (t === tabName) {
+                    if(el) el.classList.remove('hidden');
+                    if(navBtn) {
+                        navBtn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all bg-gold-500/10 text-gold-400 border border-gold-500/20";
+                    }
+                } else {
+                    if(el) el.classList.add('hidden');
+                    if(navBtn) {
+                        navBtn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-navy-900 hover:text-white";
+                    }
+                }
+            });
+
+            const titles = {
+    dashboard: ['Dashboard Utama', 'Ringkasan masa nyata jadual servis & pemeriksaan PUSPAKOM ambulans.'],
+    calendar: ['Kalendar Interaktif', 'Kalendar interaktif pengurusan tarikh servis dan PUSPAKOM.'],
+    ambulances: ['Pengurusan Ambulans', 'Pengurusan maklumat kenderaan, model dan lokasi stesen.'],
+    maintenance: ['Rekod Penyelenggaraan', 'Sejarah penyelenggaraan, kos dan odometer kenderaan.'],
+    puspakom: ['Pemantauan PUSPAKOM', 'Jadual pematuhan pemeriksaan berkanun PUSPAKOM.'],
+    analytics: ['Analisis Kos dan Laporan', 'Analisis kewangan, kos penyelenggaraan dan eksport laporan.']
+};
+            document.getElementById('pageTitle').innerText = titles[tabName][0];
+            document.getElementById('pageSubtitle').innerText = titles[tabName][1];
+
+            // Close mobile sidebar if open
+            const sidebar = document.getElementById('sidebar');
+            if(sidebar.classList.contains('fixed')) {
+                toggleMobileSidebar();
+            }
+
+            renderAll();
+        }
+
+        function renderAll() {
+            renderDashboardStats();
+            renderSmartCountdown();
+            renderCalendar();
+            renderAmbulanceTable();
+            renderMaintenanceTable();
+            renderPuspakomTable();
+            renderAnalytics();
+            populateAmbulanceDropdowns();
+        }
+
+        function calculateDaysRemaining(dateString) {
+            const target = new Date(dateString);
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            target.setHours(0,0,0,0);
+            const diffTime = target - today;
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function renderDashboardStats() {
+            document.getElementById('kpiTotalAmbulances').innerText = ambulances.length;
+
+            let nextServiceCount = 0;
+            let nextPuspakomCount = 0;
+            let overdueCount = 0;
+
+            ambulances.forEach(amb => {
+                const daysServ = calculateDaysRemaining(amb.nextService);
+                const daysPusp = calculateDaysRemaining(amb.nextPuspakom);
+
+                if (daysServ < 0 || daysPusp < 0) overdueCount++;
+                if (daysServ >= 0 && daysServ <= 30) nextServiceCount++;
+                if (daysPusp >= 0 && daysPusp <= 30) nextPuspakomCount++;
+            });
+
+            document.getElementById('kpiNextService').innerText = nextServiceCount;
+            document.getElementById('kpiNextPuspakom').innerText = nextPuspakomCount;
+            document.getElementById('kpiOverdue').innerText = overdueCount;
+
+            const alertBanner = document.getElementById('urgentAlertBanner');
+            if (overdueCount > 0) {
+                alertBanner.classList.remove('hidden');
+                document.getElementById('urgentAlertText').innerText = `Terdapat ${overdueCount} rekod ambulans yang telah melepasi tarikh servis atau PUSPAKOM (Tertunggak). Sila ambil tindakan segera!`;
+            } else {
+                alertBanner.classList.add('hidden');
+            }
+        }
+
+        function renderSmartCountdown() {
+            const container = document.getElementById('smartCountdownList');
+            container.innerHTML = '';
+
+            // Gather all upcoming events
+            let events = [];
+            ambulances.forEach(amb => {
+                events.push({
+                    regNo: amb.regNo,
+                    model: amb.model,
+                    type: 'Servis Berkala',
+                    date: amb.nextService,
+                    days: calculateDaysRemaining(amb.nextService),
+                    badgeColor: 'bg-blue-50 text-blue-700 border-blue-200'
+                });
+                events.push({
+                    regNo: amb.regNo,
+                    model: amb.model,
+                    type: 'Pemeriksaan PUSPAKOM',
+                    date: amb.nextPuspakom,
+                    days: calculateDaysRemaining(amb.nextPuspakom),
+                    badgeColor: 'bg-amber-50 text-amber-700 border-amber-200'
+                });
+            });
+
+            // Sort by closest days remaining
+            events.sort((a, b) => a.days - b.days);
+
+            if (events.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">Tiada jadual aktiviti didaftarkan.</p>`;
+                return;
+            }
+
+            events.forEach(ev => {
+                let statusText = '';
+                let statusClass = '';
+                if (ev.days < 0) {
+                    statusText = `Tertunggak ${Math.abs(ev.days)} hari`;
+                    statusClass = 'bg-red-100 text-red-700 border-red-200 font-bold';
+                } else if (ev.days === 0) {
+                    statusText = 'Hari Ini!';
+                    statusClass = 'bg-red-500 text-white font-bold animate-pulse';
+                } else if (ev.days <= 7) {
+                    statusText = `Dalam ${ev.days} hari (Kritikal)`;
+                    statusClass = 'bg-orange-100 text-orange-800 border-orange-200';
+                } else if (ev.days <= 30) {
+                    statusText = `Dalam ${ev.days} hari`;
+                    statusClass = 'bg-blue-100 text-blue-800 border-blue-200';
+                } else {
+                    statusText = `Dalam ${ev.days} hari`;
+                    statusClass = 'bg-slate-100 text-slate-700 border-slate-200';
+                }
+
+                const item = document.createElement('div');
+                item.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-3 min-w-0 p-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-all';
+                item.innerHTML = `
+    <div class="flex items-center gap-3 min-w-0 flex-1">
+        <div class="w-10 h-10 shrink-0 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center text-xs">
+            <i class="fa-solid fa-ambulance"></i>
+        </div>
+        <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="font-bold text-navy-950 text-sm">${ev.regNo}</span>
+                <span class="text-[11px] px-2 py-0.5 rounded-md border ${ev.badgeColor}">${ev.type}</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1 break-words">${ev.model} • Tarikh: ${ev.date}</p>
+        </div>
+    </div>
+    <span class="self-start sm:self-center shrink-0 text-xs px-2.5 py-1 rounded-lg border ${statusClass}">
+        ${statusText}
+    </span>
+`;               
+ container.appendChild(item);
+            });
+        }
+
+        function renderCalendar() {
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+
+            const monthNames = ["Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember"];
+            document.getElementById('calendarMonthTitle').innerText = `${monthNames[month]} ${year}`;
+
+            const grid = document.getElementById('calendarGridContainer');
+            // Keep header cells (first 7 children)
+            const headers = Array.from(grid.children).slice(0, 7);
+            grid.innerHTML = '';
+            headers.forEach(h => grid.appendChild(h));
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Blank spaces for previous month
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'bg-slate-50/40 min-h-[100px] p-2 text-slate-300 text-xs border border-slate-100';
+                grid.appendChild(emptyCell);
+            }
+
+            // Days of current month
+            for (let day = 1; day <= totalDays; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                const cell = document.createElement('div');
+                cell.className = 'bg-white min-h-[100px] p-2 border border-slate-100 flex flex-col justify-between hover:bg-slate-50/80 transition-all cursor-pointer';
+                cell.onclick = () => selectCalendarDate(dateStr);
+
+                // Check events on this date
+                let dayEventsHTML = '';
+                ambulances.forEach(amb => {
+                    if (amb.nextService === dateStr) {
+                        const isOverdue = calculateDaysRemaining(dateStr) < 0;
+                        const bgCol = isOverdue ? 'bg-red-500 text-white' : 'bg-blue-500 text-white';
+                        dayEventsHTML += `<div class="text-[10px] px-1.5 py-0.5 rounded ${bgCol} truncate mt-1"><i class="fa-solid fa-wrench"></i> Servis: ${amb.regNo}</div>`;
+                    }
+                    if (amb.nextPuspakom === dateStr) {
+                        const isOverdue = calculateDaysRemaining(dateStr) < 0;
+                        const bgCol = isOverdue ? 'bg-red-600 text-white animate-pulse' : 'bg-gold-500 text-navy-950 font-bold';
+                        dayEventsHTML += `<div class="text-[10px] px-1.5 py-0.5 rounded ${bgCol} truncate mt-1"><i class="fa-solid fa-shield"></i> PUSPAKOM: ${amb.regNo}</div>`;
+                    }
+                });
+
+                
+const today = new Date();
+
+const todayStr =
+    `${today.getFullYear()}-` +
+    `${String(today.getMonth() + 1).padStart(2, '0')}-` +
+    `${String(today.getDate()).padStart(2, '0')}`;
+
+const isToday = todayStr === dateStr;
+ const dayNumClass = isToday ? 'w-6 h-6 rounded-full bg-navy-900 text-gold-400 flex items-center justify-center font-bold text-xs' : 'font-bold text-xs text-slate-700';
+
+                cell.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="${dayNumClass}">${day}</span>
+                    </div>
+                    <div class="space-y-1 overflow-y-auto max-h-[70px]">
+                        ${dayEventsHTML}
+                    </div>
+                `;
+                grid.appendChild(cell);
+            }
+        }
+
+        
+function changeMonth(direction) {
+    currentCalendarDate.setDate(1);
+    currentCalendarDate.setMonth(
+        currentCalendarDate.getMonth() + direction
+    );
+    renderCalendar();
+}
+
+        function goToCurrentMonth() {
+            currentCalendarDate = new Date();
+            renderCalendar();
+        }
+
+        function selectCalendarDate(dateStr) {
+            const drawer = document.getElementById('calendarDayDetails');
+            const titleEl = document.getElementById('selectedDateTitle');
+            const contentEl = document.getElementById('selectedDateContent');
+
+            titleEl.innerText = `Tarikh: ${dateStr}`;
+            contentEl.innerHTML = '';
+
+            let matches = [];
+            ambulances.forEach(amb => {
+                if (amb.nextService === dateStr || amb.nextPuspakom === dateStr) {
+                    matches.push(amb);
+                }
+            });
+
+            if (matches.length === 0) {
+                contentEl.innerHTML = `<p class="text-xs text-slate-500">Tiada aktiviti servis atau PUSPAKOM berdaftar pada tarikh ini.</p>`;
+            } else {
+                matches.forEach(amb => {
+                    if (amb.nextService === dateStr) {
+                        contentEl.innerHTML += `
+                            <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-between">
+                                <div>
+                                    <span class="text-xs font-bold text-blue-800 uppercase">Jadual Servis</span>
+                                    <h5 class="font-bold text-navy-950 text-sm mt-0.5">${amb.regNo} (${amb.model})</h5>
+                                    <p class="text-xs text-slate-600">Lokasi: ${amb.location}</p>
+                                </div>
+                                <button onclick="openEditAmbulance('${amb.id}')" class="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg">Edit</button>
+                            </div>
+                        `;
+                    }
+                    if (amb.nextPuspakom === dateStr) {
+                        contentEl.innerHTML += `
+                            <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between">
+                                <div>
+                                    <span class="text-xs font-bold text-amber-800 uppercase">Pemeriksaan PUSPAKOM</span>
+                                    <h5 class="font-bold text-navy-950 text-sm mt-0.5">${amb.regNo} (${amb.model})</h5>
+                                    <p class="text-xs text-slate-600">Lokasi: ${amb.location}</p>
+                                </div>
+                                <button onclick="openEditAmbulance('${amb.id}')" class="text-xs bg-gold-600 hover:bg-gold-700 text-navy-950 px-3 py-1.5 rounded-lg">Edit</button>
+                            </div>
+                        `;
+                    }
+                });
+            }
+
+            drawer.classList.remove('hidden');
+        }
+
+        function closeDayDetails() {
+            document.getElementById('calendarDayDetails').classList.add('hidden');
+        }
+
+        function renderAmbulanceTable() {
+            const tbody = document.getElementById('ambulanceTableBody');
+            tbody.innerHTML = '';
+
+            if (ambulances.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Tiada rekod ambulans dijumpai.</td></tr>`;
+                return;
+            }
+
+            ambulances.forEach(amb => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-slate-50/80 transition-all';
+                row.innerHTML = `
+                    <td class="py-4 px-4 font-bold text-navy-950">${amb.regNo}</td>
+                    <td class="py-4 px-4 text-slate-600">${amb.model}</td>
+                    <td class="py-4 px-4 text-slate-600">${amb.location}</td>
+                    <td class="py-4 px-4 font-medium text-blue-600">${amb.nextService}</td>
+                    <td class="py-4 px-4 font-medium text-gold-600">${amb.nextPuspakom}</td>
+                    <td class="py-4 px-4 text-right space-x-2">
+                        <button onclick="openEditAmbulance('${amb.id}')" class="text-xs font-semibold text-slate-600 hover:text-navy-950 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-pen"></i> Edit</button>
+                        <button onclick="deleteAmbulance('${amb.id}')" class="text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+
+tbody.appendChild(row);   
+});
+        }
+
+        function renderMaintenanceTable() {
+            const tbody = document.getElementById('maintenanceTableBody');
+            tbody.innerHTML = '';
+
+            if (maintenanceRecords.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400 text-xs">Tiada rekod penyelenggaraan.</td></tr>`;
+                return;
+            }
+
+            maintenanceRecords.forEach(m => {
+                const amb = ambulances.find(a => a.id === m.ambulanceId);
+                const regNo = amb ? amb.regNo : 'Ambulans Dipadam';
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-slate-50/80 transition-all';
+                row.innerHTML = `
+                    <td class="py-4 px-4 font-bold text-navy-950">${regNo}</td>
+                    <td class="py-4 px-4 text-slate-600">${m.type}</td>
+                    <td class="py-4 px-4 text-slate-600">${m.date}</td>
+                    <td class="py-4 px-4 text-slate-600">${Number(m.odometer).toLocaleString()} KM</td>
+                    <td class="py-4 px-4 font-semibold text-navy-950">RM ${Number(m.cost).toFixed(2)}</td>
+                    <td class="py-4 px-4 font-medium text-blue-600">${m.nextDate}</td>
+                    <td class="py-4 px-4 text-right space-x-2">
+                        <button onclick="openEditMaintenance('${m.id}')" class="text-xs font-semibold text-slate-600 hover:text-navy-950 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteMaintenance('${m.id}')" class="text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+function openAddPuspakomModal(ambulanceId = '') {
+
+    if (ambulances.length === 0) {
+        showMessage(
+            'Tiada Ambulans',
+            'Sila daftar ambulans terlebih dahulu.',
+            'error'
+        );
+        return;
+    }
+
+    const select = document.getElementById('puspAmbulanceId');
+
+    select.innerHTML = '';
+
+    ambulances.forEach(amb => {
+        const option = document.createElement('option');
+
+        option.value = amb.id;
+        option.textContent = `${amb.regNo} - ${amb.model}`;
+
+        select.appendChild(option);
+    });
+
+    select.value = ambulanceId || ambulances[0].id;
+
+    loadPuspakomDetails();
+
+    document.getElementById('puspakomModal')
+        .classList.remove('hidden');
+}
+
+
+function loadPuspakomDetails() {
+
+    const id = document.getElementById('puspAmbulanceId').value;
+
+    const amb = ambulances.find(a => a.id === id);
+
+    if (!amb) return;
+
+    document.getElementById('puspLastDate').value =
+        amb.lastPuspakom || '';
+
+    document.getElementById('puspNextDate').value =
+        amb.nextPuspakom || '';
+
+    document.getElementById('puspNotes').value =
+        amb.puspakomNotes || '';
+}
+
+
+function savePuspakom(event) {
+
+    event.preventDefault();
+
+    const id = document.getElementById('puspAmbulanceId').value;
+
+    const amb = ambulances.find(a => a.id === id);
+
+    if (!amb) {
+        showMessage(
+            'Ralat',
+            'Rekod ambulans tidak dijumpai.',
+            'error'
+        );
+        return;
+    }
+
+    const lastDate = document.getElementById('puspLastDate').value;
+    const nextDate = document.getElementById('puspNextDate').value;
+
+    if (lastDate && nextDate < lastDate) {
+        showMessage(
+            'Tarikh Tidak Sah',
+            'Tarikh PUSPAKOM seterusnya tidak boleh lebih awal daripada pemeriksaan terakhir.',
+            'error'
+        );
+        return;
+    }
+
+    amb.lastPuspakom = lastDate;
+    amb.nextPuspakom = nextDate;
+    amb.puspakomNotes =
+        document.getElementById('puspNotes').value.trim();
+
+    saveData();
+
+    closeModal('puspakomModal');
+
+    showMessage(
+        'Berjaya!',
+        'Maklumat pemeriksaan PUSPAKOM telah disimpan.',
+        'success'
+    );
+}
+
+        function renderPuspakomTable() {
+            const tbody = document.getElementById('puspakomTableBody');
+            tbody.innerHTML = '';
+
+            ambulances.forEach(amb => {
+                const days = calculateDaysRemaining(amb.nextPuspakom);
+                let statusBadge = '';
+                if (days < 0) {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-lg bg-red-100 text-red-700 font-bold text-xs border border-red-200">Tertunggak (${Math.abs(days)} hari)</span>`;
+                } else if (days <= 14) {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-lg bg-orange-100 text-orange-800 font-bold text-xs border border-orange-200">Segera (${days} hari lagi)</span>`;
+                } else {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 font-medium text-xs border border-emerald-200">${days} hari lagi</span>`;
+                }
+
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-slate-50/80 transition-all';
+                row.innerHTML = `
+                    <td class="py-4 px-4 font-bold text-navy-950">${amb.regNo} <span class="text-xs text-slate-400 font-normal">(${amb.model})</span></td>
+                    <td class="py-4 px-4 text-slate-600">
+    ${amb.lastPuspakom || 'Belum direkod'}
+</td>
+                    <td class="py-4 px-4 font-semibold text-gold-600">${amb.nextPuspakom}</td>
+                    <td class="py-4 px-4">${statusBadge}</td>
+                    <td class="py-4 px-4 text-slate-500 text-xs puspakom-notes"></td>
+                    <td class="py-4 px-4 text-right">
+                        <button onclick="openAddPuspakomModal('${amb.id}')" 
+class="text-xs font-semibold text-gold-700 hover:text-gold-800 bg-gold-50 hover:bg-gold-100 px-3 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-shield-halved"></i> Kemas Kini</button>
+                    </td>
+                `;
+
+row.querySelector('.puspakom-notes').textContent =
+    amb.puspakomNotes || '-';
+
+tbody.appendChild(row);
+            });
+        }
+
+        function renderAnalytics() {
+
+    const startDate = document.getElementById('analyticsStartDate').value;
+    const endDate = document.getElementById('analyticsEndDate').value;
+
+    const formatRM = amount =>
+        'RM ' + Number(amount).toLocaleString('ms-MY', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+    const today = new Date();
+
+    document.getElementById('analyticsReportDate').textContent =
+        'Tarikh Laporan: ' +
+        today.toLocaleDateString('ms-MY', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+
+    const validRange = !startDate || !endDate || startDate <= endDate;
+
+    document.getElementById('analyticsPeriodLabel').textContent =
+        !validRange
+            ? 'Ralat: Tarikh mula melebihi tarikh tamat.'
+            : startDate || endDate
+                ? `Tempoh: ${startDate || 'Semua'} hingga ${endDate || 'Semua'}`
+                : 'Tempoh: Semua Tarikh';
+
+    // TAPIS REKOD MENGIKUT TARIKH
+    const filteredRecords = maintenanceRecords.filter(m => {
+
+        if (!validRange) return false;
+
+        if (startDate && (!m.date || m.date < startDate)) return false;
+        if (endDate && (!m.date || m.date > endDate)) return false;
+
+        return true;
+    });
+
+    // RINGKASAN KESELURUHAN
+    const totalCost = filteredRecords.reduce(
+        (sum, m) => sum + (Number(m.cost) || 0), 0
+    );
+
+    const avg = ambulances.length > 0
+        ? totalCost / ambulances.length
+        : 0;
+
+    document.getElementById('analyticsTotalCost').textContent =
+        formatRM(totalCost);
+
+    document.getElementById('analyticsAvgCost').textContent =
+        formatRM(avg);
+
+    document.getElementById('analyticsTotalServices').textContent =
+        filteredRecords.length;
+
+    // KOTAK SETIAP AMBULANS
+    const container =
+        document.getElementById('analyticsAmbulanceCards');
+
+    container.innerHTML = '';
+
+    if (ambulances.length === 0) {
+        container.innerHTML =
+            '<p class="text-sm text-slate-500">Tiada ambulans didaftarkan.</p>';
+        return;
+    }
+
+    ambulances.forEach(amb => {
+
+        const records = filteredRecords.filter(
+            m => m.ambulanceId === amb.id
+        );
+
+        const cost = records.reduce(
+            (sum, m) => sum + (Number(m.cost) || 0), 0
+        );
+
+        const count = records.length;
+
+        const average = count > 0 ? cost / count : 0;
+
+        const card = document.createElement('div');
+
+        card.className =
+            'bg-white p-5 rounded-2xl border border-slate-100 shadow-sm';
+
+        card.innerHTML = `
+            <div class="flex items-center gap-3 mb-4">
+
+                <div class="w-11 h-11 bg-navy-50 rounded-xl flex items-center justify-center text-navy-900">
+                    <i class="fa-solid fa-truck-medical"></i>
+                </div>
+
+                <div>
+                    <h4 class="font-heading font-bold text-navy-950 amb-reg"></h4>
+                    <p class="text-xs text-slate-500 amb-model"></p>
+                </div>
+
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+
+                <div class="bg-slate-50 rounded-xl p-3">
+                    <p class="text-xs text-slate-500">Jumlah Kos</p>
+                    <p class="font-bold text-navy-950 text-sm break-words">
+                        ${formatRM(cost)}
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl p-3">
+                    <p class="text-xs text-slate-500">Purata / Servis</p>
+                    <p class="font-bold text-gold-600 text-sm break-words">
+                        ${formatRM(average)}
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl p-3">
+                    <p class="text-xs text-slate-500">Jumlah Servis</p>
+                    <p class="font-bold text-blue-600 text-lg">
+                        ${count}
+                    </p>
+                </div>
+
+            </div>
+        `;
+
+        card.querySelector('.amb-reg').textContent =
+            amb.regNo || 'Ambulans';
+
+        card.querySelector('.amb-model').textContent =
+            amb.model || '';
+
+        container.appendChild(card);
+
+    });
+}
+        function populateAmbulanceDropdowns() {
+            const select = document.getElementById('maintAmbulanceId');
+            if(!select) return;
+            select.innerHTML = '';
+            ambulances.forEach(amb => {
+                const opt = document.createElement('option');
+                opt.value = amb.id;
+                opt.innerText = `${amb.regNo} — ${amb.model}`;
+                select.appendChild(opt);
+            });
+        }
+
+        function openAddAmbulanceModal() {
+            document.getElementById('ambulanceModalTitle').innerText = 'Tambah Ambulans Baharu';
+            document.getElementById('editAmbulanceId').value = '';
+            document.getElementById('ambulanceForm').reset();
+            document.getElementById('ambulanceModal').classList.remove('hidden');
+        }
+
+        function openEditAmbulance(id) {
+            const amb = ambulances.find(a => a.id === id);
+            if (!amb) return;
+            document.getElementById('ambulanceModalTitle').innerText = 'Kemaskini Maklumat Ambulans';
+            document.getElementById('editAmbulanceId').value = amb.id;
+            document.getElementById('ambRegNo').value = amb.regNo;
+            document.getElementById('ambModel').value = amb.model;
+            document.getElementById('ambLocation').value = amb.location;
+            document.getElementById('ambNextService').value = amb.nextService;
+            document.getElementById('ambNextPuspakom').value = amb.nextPuspakom;
+            document.getElementById('ambulanceModal').classList.remove('hidden');
+        }
+
+        function saveAmbulance(event) {
+            event.preventDefault();
+            const id = document.getElementById('editAmbulanceId').value;
+            const regNo = document.getElementById('ambRegNo').value;
+            const model = document.getElementById('ambModel').value;
+            const location = document.getElementById('ambLocation').value;
+            const nextService = document.getElementById('ambNextService').value;
+            const nextPuspakom = document.getElementById('ambNextPuspakom').value;
+
+            if (id) {
+                const amb = ambulances.find(a => a.id === id);
+                if (amb) {
+                    amb.regNo = regNo;
+                    amb.model = model;
+                    amb.location = location;
+                    amb.nextService = nextService;
+                    amb.nextPuspakom = nextPuspakom;
+                }
+            } else {
+                const newAmb = {
+                    id: 'amb-' + Date.now(),
+                    regNo, model, location, nextService, nextPuspakom
+                };
+                ambulances.push(newAmb);
+            }
+
+            saveData();
+            closeModal('ambulanceModal');
+            showMessage('Berjaya!', 'Maklumat ambulans telah disimpan dengan selamat.', 'success');
+        }
+
+        function deleteAmbulance(id) {
+            if (confirm('Adakah anda pasti ingin memadam rekod ambulans ini?')) {
+                ambulances = ambulances.filter(a => a.id !== id);
+                saveData();
+                showMessage('Berjaya', 'Rekod ambulans telah dipadam.', 'info');
+            }
+        }
+
+        function openAddMaintenanceModal() {
+    sjamClearReceipt();
+    document.getElementById('maintenanceModalTitle').innerText = 'Rekod Servis Baharu';            document.getElementById('editMaintId').value = '';
+            document.getElementById('maintenanceForm').reset();
+            populateAmbulanceDropdowns();
+            document.getElementById('maintenanceModal').classList.remove('hidden');
+        }
+
+        function openEditMaintenance(id) {
+    sjamClearReceipt();
+    const m = maintenanceRecords.find(item => item.id === id);            if (!m) return;
+            populateAmbulanceDropdowns();
+            document.getElementById('maintenanceModalTitle').innerText = 'Kemaskini Rekod Servis';
+            document.getElementById('editMaintId').value = m.id;
+            document.getElementById('maintAmbulanceId').value = m.ambulanceId;
+            document.getElementById('maintType').value = m.type;
+            document.getElementById('maintDate').value = m.date;
+            document.getElementById('maintOdometer').value = m.odometer;
+            document.getElementById('maintCost').value = m.cost;
+            document.getElementById('maintNextDate').value = m.nextDate;
+            document.getElementById('maintNotes').value = m.notes;
+            document.getElementById('maintenanceModal').classList.remove('hidden');
+        }
+
+        function saveMaintenance(event) {
+            event.preventDefault();
+            const id = document.getElementById('editMaintId').value;
+            const ambulanceId = document.getElementById('maintAmbulanceId').value;
+            const type = document.getElementById('maintType').value;
+            const date = document.getElementById('maintDate').value;
+            const odometer = document.getElementById('maintOdometer').value;
+            const cost = document.getElementById('maintCost').value;
+            const nextDate = document.getElementById('maintNextDate').value;
+            const notes = document.getElementById('maintNotes').value;
+
+            if (id) {
+                const m = maintenanceRecords.find(item => item.id === id);
+                if (m) {
+                    m.ambulanceId = ambulanceId;
+                    m.type = type;
+                    m.date = date;
+                    m.odometer = odometer;
+                    m.cost = cost;
+                    m.nextDate = nextDate;
+                    m.notes = notes;
+                }
+            } else {
+                const newM = {
+                    id: 'maint-' + Date.now(),
+                    ambulanceId, type, date, odometer, cost, nextDate, notes
+                };
+                maintenanceRecords.push(newM);
+            }
+
+            saveData();
+            closeModal('maintenanceModal');
+            showMessage('Berjaya!', 'Rekod penyelenggaraan telah disimpan.', 'success');
+        }
+
+        function deleteMaintenance(id) {
+            if (confirm('Adakah anda pasti ingin memadam rekod servis ini?')) {
+                maintenanceRecords = maintenanceRecords.filter(item => item.id !== id);
+                saveData();
+                showMessage('Berjaya', 'Rekod penyelenggaraan telah dipadam.', 'info');
+            }
+        }
+
+        function handleGlobalSearch(query) {
+            const q = query.toLowerCase();
+            if(!q) {
+                renderAmbulanceTable();
+                return;
+            }
+            const filtered = ambulances.filter(a => a.regNo.toLowerCase().includes(q) || a.model.toLowerCase().includes(q) || a.location.toLowerCase().includes(q));
+            const tbody = document.getElementById('ambulanceTableBody');
+            tbody.innerHTML = '';
+            filtered.forEach(amb => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-slate-50/80 transition-all';
+                row.innerHTML = `
+                    <td class="py-4 px-4 font-bold text-navy-950">${amb.regNo}</td>
+                    <td class="py-4 px-4 text-slate-600">${amb.model}</td>
+                    <td class="py-4 px-4 text-slate-600">${amb.location}</td>
+                    <td class="py-4 px-4 font-medium text-blue-600">${amb.nextService}</td>
+                    <td class="py-4 px-4 font-medium text-gold-600">${amb.nextPuspakom}</td>
+                    <td class="py-4 px-4 text-right space-x-2">
+                        <button onclick="openEditAmbulance('${amb.id}')" class="text-xs font-semibold text-slate-600 hover:text-navy-950 bg-slate-100 px-3 py-1.5 rounded-lg">Edit</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function exportICSFile() {
+            let icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Ambulance Schedule Pro 360//MS\n";
+            ambulances.forEach(amb => {
+                const servDateClean = amb.nextService.replace(/-/g, '');
+                const puspDateClean = amb.nextPuspakom.replace(/-/g, '');
+                icsContent += `BEGIN:VEVENT\nSUMMARY:Servis Ambulans ${amb.regNo}\nDESCRIPTION:Servis untuk model ${amb.model} di ${amb.location}\nDTSTART:${servDateClean}\nDTEND:${servDateClean}\nEND:VEVENT\n`;
+                icsContent += `BEGIN:VEVENT\nSUMMARY:Pemeriksaan PUSPAKOM ${amb.regNo}\nDESCRIPTION:Pemeriksaan berkanun PUSPAKOM ${amb.model}\nDTSTART:${puspDateClean}\nDTEND:${puspDateClean}\nEND:VEVENT\n`;
+            });
+            icsContent += "END:VCALENDAR";
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'Ambulance_Schedule_360.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showMessage('Muat Turun Berjaya', 'Fail .ics telah berjaya dimuat turun untuk import ke kalendar peribadi.', 'success');
+        }
+
+        function exportCSV(type) {
+            let csv = '';
+            let filename = '';
+            if (type === 'ambulances') {
+                csv = 'No Pendaftaran,Model,Lokasi,Servis Seterusnya,Tarikh PUSPAKOM\n';
+                ambulances.forEach(a => {
+                    csv += `"${a.regNo}","${a.model}","${a.location}","${a.nextService}","${a.nextPuspakom}"\n`;
+                });
+                filename = 'Senarai_Ambulans.csv';
+            } else {
+                csv = 'Ambulans,Jenis Servis,Tarikh,Odometer(KM),Kos(RM),Servis Seterusnya,Catatan\n';
+                maintenanceRecords.forEach(m => {
+                    const amb = ambulances.find(a => a.id === m.ambulanceId);
+                    const reg = amb ? amb.regNo : 'N/A';
+                    csv += `"${reg}","${m.type}","${m.date}","${m.odometer}","${m.cost}","${m.nextDate}","${m.notes}"\n`;
+                });
+                filename = 'Rekod_Penyelenggaraan.csv';
+            }
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportAllDataJSON() {
+            const backup = { ambulances, maintenanceRecords };
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'Ambulance_Schedule_PRO_360_Backup.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showMessage('Backup Selesai', 'Fail sandaran data JSON telah dimuat turun.', 'success');
+        }
+
+        // Initialize application on window load
+        
+    window.onload = function() {
+        renderAll();
+    };
+</script>
+
+<!-- FUNGSI PRATONTON RESIT -->
+<script>
+
+let sjamReceiptFile = null;
+let sjamReceiptURL = null;
+
+window.getSjamReceiptFile = function() {
+    return sjamReceiptFile;
+};
+
+function sjamClearReceipt() {
+
+    if (sjamReceiptURL) {
+        URL.revokeObjectURL(sjamReceiptURL);
+        sjamReceiptURL = null;
+    }
+
+    sjamReceiptFile = null;
+
+    document.getElementById('sjamReceiptCamera').value = '';
+    document.getElementById('sjamReceiptGallery').value = '';
+
+    const image = document.getElementById('sjamReceiptImage');
+
+    image.removeAttribute('src');
+    image.classList.add('hidden');
+
+    document.getElementById('sjamReceiptPDF')
+        .classList.add('hidden');
+
+    document.getElementById('sjamReceiptFilename')
+        .textContent = '';
+
+    document.getElementById('sjamReceiptPreview')
+        .classList.add('hidden');
+}
+
+function sjamPreviewReceipt(input) {
+
+    const file = input.files[0];
+
+    if (!file) return;
+
+    const isImage = file.type.startsWith('image/');
+
+    const isPDF =
+        file.type === 'application/pdf' ||
+        /\.pdf$/i.test(file.name);
+
+    if (!isImage && !isPDF) {
+        showMessage(
+            'Format Tidak Disokong',
+            'Sila pilih gambar atau dokumen PDF.',
+            'error'
+        );
+
+        input.value = '';
+        return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+
+        showMessage(
+            'Fail Terlalu Besar',
+            'Saiz maksimum fail ialah 10 MB.',
+            'error'
+        );
+
+        input.value = '';
+        return;
+    }
+
+    sjamClearReceipt();
+
+    sjamReceiptFile = file;
+    sjamReceiptURL = URL.createObjectURL(file);
+
+    document.getElementById('sjamReceiptFilename')
+        .textContent = file.name;
+
+    if (isImage) {
+
+        const image = document.getElementById('sjamReceiptImage');
+
+        image.src = sjamReceiptURL;
+        image.classList.remove('hidden');
+
+    } else {
+
+        document.getElementById('sjamReceiptPDF')
+            .classList.remove('hidden');
+
+    }
+
+    document.getElementById('sjamReceiptPreview')
+        .classList.remove('hidden');
+}
+
+</script>
+
+<!-- JAM DIGITAL MASA MALAYSIA -->
+<script>
+(function () {
+
+    const clockEl = document.getElementById('sjamLiveClock');
+    const dateEl = document.getElementById('sjamLiveDate');
+
+    if (!clockEl || !dateEl) return;
+
+    const timeFormatter = new Intl.DateTimeFormat('ms-MY', {
+        timeZone: 'Asia/Kuala_Lumpur',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hourCycle: 'h23'
+    });
+
+    const dateFormatter = new Intl.DateTimeFormat('ms-MY', {
+        timeZone: 'Asia/Kuala_Lumpur',
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    function updateSjamClock() {
+
+        const now = new Date();
+
+        clockEl.textContent = timeFormatter.format(now);
+        dateEl.textContent = dateFormatter.format(now);
+
+    }
+
+    updateSjamClock();
+
+    setInterval(updateSjamClock, 1000);
+
+})();
+</script>
+
+<!-- FIREBASE CLOUD CONNECTION -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+import {
+    getFirestore,
+    collection,
+    doc,
+    setDoc,
+    updateDoc,
+    deleteDoc,
+    onSnapshot
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAGhAnGsRh0SlrpvTGydG1z9DfzOZWB1M4",
+    authDomain: "sjam-servis-dan-puspakom.firebaseapp.com",
+    projectId: "sjam-servis-dan-puspakom",
+    storageBucket: "sjam-servis-dan-puspakom.firebasestorage.app",
+    messagingSenderId: "341234855616",
+    appId: "1:341234855616:web:cdcf799a3f2b04748f0725"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// GOOGLE DRIVE - SIMPAN RESIT SERVIS
+const SJAM_UPLOAD_URL =
+'https://script.google.com/macros/s/AKfycbzLNLk9w67_fuE7a1REAe5xDoZ6uoKFeTVFgLl23_FeVYTWfDvsP1f_o8AxF9PtaaWBvw/exec';
+
+let ambulancesLoaded = false;
+let maintenanceLoaded = false;
+
+function reportError(error) {
+    console.error("Firebase:", error);
+
+    window.showMessage(
+        'Ralat Firebase',
+        error.message || 'Sambungan Firebase gagal.',
+        'error'
+    );
+}
+
+const authPromise = signInAnonymously(auth);
+
+authPromise.then(() => {
+
+    onSnapshot(
+        collection(db, 'ambulances'),
+        snapshot => {
+            const records = snapshot.docs.map(item => ({
+                ...item.data(),
+                id: item.id
+            }));
+
+            window.receiveCloudData('ambulances', records);
+            ambulancesLoaded = true;
+        },
+        reportError
+    );
+
+    onSnapshot(
+        collection(db, 'maintenanceRecords'),
+        snapshot => {
+            const records = snapshot.docs.map(item => ({
+                ...item.data(),
+                id: item.id
+            }));
+
+            window.receiveCloudData('maintenanceRecords', records);
+            maintenanceLoaded = true;
+        },
+        reportError
+    );
+
+}).catch(reportError);
+
+async function performWrite(operation) {
+    try {
+        await authPromise;
+
+        if (!ambulancesLoaded || !maintenanceLoaded) {
+            throw new Error(
+                'Rekod masih dimuatkan. Cuba semula sebentar lagi.'
+            );
+        }
+
+        await operation();
+        return true;
+
+    } catch (error) {
+        reportError(error);
+        return false;
+    }
+}
+
+const value = id =>
+    document.getElementById(id).value.trim();
+
+const newId = prefix =>
+    prefix + '-' + Date.now() + '-' +
+    Math.random().toString(36).slice(2, 10);
+
+// TAMBAH / EDIT AMBULANS
+window.saveAmbulance = async function(event) {
+    event.preventDefault();
+
+    const editId = value('editAmbulanceId');
+    const id = editId || newId('amb');
+
+    const record = {
+        regNo: value('ambRegNo'),
+        model: value('ambModel'),
+        location: value('ambLocation'),
+        nextService: value('ambNextService'),
+        nextPuspakom: value('ambNextPuspakom')
+    };
+
+    const success = await performWrite(() =>
+        editId
+            ? updateDoc(doc(db, 'ambulances', id), record)
+            : setDoc(doc(db, 'ambulances', id), {
+                id,
+                ...record
+            })
+    );
+
+    if (!success) return;
+
+    window.closeModal('ambulanceModal');
+
+    window.showMessage(
+        'Berjaya!',
+        'Maklumat ambulans telah disimpan dalam Firebase.',
+        'success'
+    );
+};
+
+// PADAM AMBULANS
+window.deleteAmbulance = async function(id) {
+    if (!confirm('Padam rekod ambulans ini?')) return;
+
+    const success = await performWrite(() =>
+        deleteDoc(doc(db, 'ambulances', id))
+    );
+
+    if (success) {
+        window.showMessage(
+            'Berjaya',
+            'Rekod ambulans telah dipadam.',
+            'success'
+        );
+    }
+};
+
+// MUAT NAIK RESIT KE GOOGLE DRIVE
+async function sjamUploadToDrive(file, recordId, regNo) {
+
+    const { user } = await authPromise;
+    const token = await user.getIdToken();
+
+    let mime = file.type;
+
+    if (!mime && /\.jpe?g$/i.test(file.name)) {
+        mime = 'image/jpeg';
+    }
+    if (!mime && /\.png$/i.test(file.name)) {
+        mime = 'image/png';
+    }
+    if (!mime && /\.pdf$/i.test(file.name)) {
+        mime = 'application/pdf';
+    }
+
+    if (!['image/jpeg', 'image/png', 'application/pdf'].includes(mime)) {
+        throw new Error('Hanya JPG, PNG atau PDF dibenarkan.');
+    }
+
+    const base64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            resolve(String(reader.result).split(',')[1]);
+        };
+
+        reader.onerror = () => reject(
+            new Error('Gagal membaca fail resit.')
+        );
+
+        reader.readAsDataURL(file);
+    });
+
+    return new Promise((resolve, reject) => {
+
+        const requestId =
+            'SJAM-' + Date.now() + '-' +
+            Math.random().toString(36).slice(2);
+
+        const iframe = document.createElement('iframe');
+        iframe.name = 'sjamFrame' + Date.now();
+        iframe.style.display = 'none';
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = SJAM_UPLOAD_URL;
+        form.target = iframe.name;
+        form.style.display = 'none';
+
+        const params = {
+            requestId: requestId,
+            firebaseToken: token,
+            recordId: recordId,
+            regNo: regNo,
+            mime: mime,
+            fileBase64: base64
+        };
+
+        Object.entries(params).forEach(([key, val]) => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = val;
+            form.appendChild(input);
+        });
+
+        let timer;
+
+        function cleanup() {
+            clearTimeout(timer);
+            window.removeEventListener('message', onMessage);
+            form.remove();
+            iframe.remove();
+        }
+
+        function onMessage(event) {
+
+            const data = event.data;
+
+            if (!data ||
+                data.type !== 'SJAM_DRIVE_RESULT' ||
+                data.requestId !== requestId) {
+                return;
+            }
+
+            if (event.origin !== 'null') {
+                let host;
+
+                try {
+                    host = new URL(event.origin).hostname;
+                } catch {
+                    return;
+                }
+
+                if (host !== 'script.google.com' &&
+                    !host.endsWith('.googleusercontent.com')) {
+                    return;
+                }
+            }
+
+            cleanup();
+
+            if (data.success === true && data.fileId) {
+                resolve(data);
+            } else {
+                reject(new Error(
+                    data.error || 'Muat naik gagal.'
+                ));
+            }
+        }
+
+        window.addEventListener('message', onMessage);
+
+        document.body.appendChild(iframe);
+        document.body.appendChild(form);
+
+        timer = setTimeout(() => {
+            cleanup();
+            reject(new Error(
+                'Masa muat naik tamat. Sila cuba semula.'
+            ));
+        }, 120000);
+
+        form.submit();
+    });
+}
+
+// TAMBAH / EDIT SERVIS
+window.saveMaintenance = async function(event) {
+    event.preventDefault();
+
+    const editId = value('editMaintId');
+    const id = editId || newId('maint');
+
+
+    const record = {
+        ambulanceId: value('maintAmbulanceId'),
+        type: value('maintType'),
+        date: value('maintDate'),
+        odometer: value('maintOdometer'),
+        cost: value('maintCost'),
+        nextDate: value('maintNextDate'),
+        notes: value('maintNotes')
+    };
+
+    // SEMAK RESIT YANG DIPILIH
+    const receiptFile = window.getSjamReceiptFile();
+
+    if (receiptFile) {
+
+        const amb = ambulances.find(
+            a => a.id === record.ambulanceId
+        );
+
+        try {
+            const uploaded = await sjamUploadToDrive(
+                receiptFile,
+                id,
+                amb ? amb.regNo : 'AMBULANS'
+            );
+
+            record.receiptFileId = uploaded.fileId;
+            record.receiptUrl = uploaded.fileUrl ||
+                uploaded.url ||
+                'https://drive.google.com/file/d/' +
+                uploaded.fileId + '/view';
+
+            record.receiptFileName = receiptFile.name;
+
+        } catch (error) {
+
+            window.showMessage(
+                'Muat Naik Resit Gagal',
+                error.message,
+                'error'
+            );
+
+            return;
+        }
+    }
+
+    const success = await performWrite(() =>
+
+            editId
+            ? updateDoc(doc(db, 'maintenanceRecords', id), record)
+            : setDoc(doc(db, 'maintenanceRecords', id), {
+                id,
+                ...record
+            })
+    );
+
+       if (!success) return;
+
+    sjamClearReceipt();
+
+    window.closeModal('maintenanceModal');
+
+    window.showMessage(
+        'Berjaya!',
+        'Rekod servis telah disimpan dalam Firebase.',
+        'success'
+    );
+};
+
+// PADAM SERVIS
+window.deleteMaintenance = async function(id) {
+    if (!confirm('Padam rekod servis ini?')) return;
+
+    const success = await performWrite(() =>
+        deleteDoc(doc(db, 'maintenanceRecords', id))
+    );
+
+    if (success) {
+        window.showMessage(
+            'Berjaya',
+            'Rekod servis telah dipadam.',
+            'success'
+        );
+    }
+};
+
+// KEMAS KINI PUSPAKOM
+window.savePuspakom = async function(event) {
+    event.preventDefault();
+
+    const id = value('puspAmbulanceId');
+    const lastDate = value('puspLastDate');
+    const nextDate = value('puspNextDate');
+
+    if (lastDate && nextDate && nextDate < lastDate) {
+        window.showMessage(
+            'Tarikh Tidak Sah',
+            'Tarikh seterusnya tidak boleh lebih awal.',
+            'error'
+        );
+        return;
+    }
+
+    const record = {
+        lastPuspakom: lastDate,
+        nextPuspakom: nextDate,
+        puspakomNotes: value('puspNotes')
+    };
+
+    const success = await performWrite(() =>
+        updateDoc(doc(db, 'ambulances', id), record)
+    );
+
+    if (!success) return;
+
+    window.closeModal('puspakomModal');
+
+    window.showMessage(
+        'Berjaya!',
+        'Maklumat PUSPAKOM telah disimpan.',
+        'success'
+    );
+};
+
+</script>
+</body>
+</html>
