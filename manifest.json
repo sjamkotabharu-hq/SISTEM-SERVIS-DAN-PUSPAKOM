@@ -1,18 +1,27 @@
-
 {
   "name": "Sistem Servis dan PUSPAKOM SJAM Kota Bharu",
   "short_name": "SJAM Servis",
+  "description": "Sistem pengurusan servis dan pemeriksaan PUSPAKOM ambulans SJAM Kota Bharu.",
+  "lang": "ms",
   "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0b192c",
   "theme_color": "#0b192c",
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "./icon.png",
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
