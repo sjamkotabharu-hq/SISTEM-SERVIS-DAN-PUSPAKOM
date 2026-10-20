@@ -599,38 +599,55 @@ display: block !important;
 
 <!-- TAB 4: MAINTENANCE RECORDS -->
                     <div id="tab-maintenance" class="tab-content hidden space-y-6">
-                        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-                            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-3 sm:p-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
                                 <div>
                                     <h3 class="font-heading font-bold text-navy-950 text-lg">Rekod Penyelenggaraan & Servis</h3>
                                     <p class="text-xs text-slate-500">Sejarah servis terakhir, odometer, kos serta catatan juruteknik.</p>
                                 </div>
-                                <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                                
+<!-- BUTANG REKOD PENYELENGGARAAN RESPONSIF -->
+<div class="grid grid-cols-2 sm:flex sm:flex-row gap-2 w-full sm:w-auto">
 
-    <!-- PANEL POMEN BAHARU -->
+    <!-- PANEL POMEN -->
     <button type="button"
         onclick="openMechanicPanel()"
-        class="bg-navy-900 hover:bg-navy-800 text-white font-semibold px-4 py-2.5 rounded-xl text-xs shadow-sm flex items-center justify-center gap-2 transition-all">
+        class="min-w-0 bg-navy-900 hover:bg-navy-800 text-white font-semibold px-2 sm:px-4 py-3 rounded-xl text-[11px] sm:text-xs shadow-sm flex items-center justify-center gap-2 transition-all">
 
         <i class="fa-solid fa-screwdriver-wrench"></i>
-        Panel Pomen
+        <span>Panel Pomen</span>
+
     </button>
 
-    <!-- BUTANG SERVIS ASAL DIKEKALKAN -->
+    <!-- REKOD SERVIS ASAL -->
     <button type="button"
         onclick="openAddMaintenanceModal()"
-        class="bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold px-4 py-2.5 rounded-xl text-xs shadow-sm flex items-center justify-center gap-2 transition-all">
+        class="min-w-0 bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold px-2 sm:px-4 py-3 rounded-xl text-[11px] sm:text-xs shadow-sm flex items-center justify-center gap-2 transition-all">
 
-        <i class="fa-solid fa-wrench text-xs"></i>
-        Tambah Rekod Servis
+        <i class="fa-solid fa-wrench"></i>
+
+        <span class="sm:hidden">
+            Rekod Servis
+        </span>
+
+        <span class="hidden sm:inline">
+            Tambah Rekod Servis
+        </span>
+
     </button>
 
-</div>                           
+</div>
+                           
  </div>
 
-<div class="overflow-x-auto">
-                                <table class="w-full min-w-[900px] text-left border-collapse">
-                                    <thead>
+<!-- KAD REKOD UNTUK TELEFON -->
+<div id="maintenanceMobileCards"
+     class="md:hidden print:hidden space-y-3">
+</div>
+
+<!-- JADUAL ASAL UNTUK TABLET DAN KOMPUTER -->
+<div class="hidden md:block print:block overflow-x-auto">
+    <table class="w-full min-w-[900px] text-left border-collapse">                                    <thead>
                                         <tr class="border-b border-slate-200 text-xs font-bold text-slate-500 uppercase bg-slate-50/70">
                                             <th class="py-3.5 px-4 rounded-l-xl">Ambulans</th>
                                             <th class="py-3.5 px-4">Jenis Servis</th>
@@ -1567,8 +1584,9 @@ function saveData() {
             renderSmartCountdown();
             renderCalendar();
             renderAmbulanceTable();
-            renderMaintenanceTable();
-            renderPuspakomTable();
+renderMaintenanceTable();
+renderMaintenanceMobileCards();
+renderPuspakomTable();
             renderAnalytics();
             populateAmbulanceDropdowns();
         }
@@ -2003,6 +2021,268 @@ if (amb.gearOilNextDate === dateStr) {
 tbody.appendChild(row);   
 });
         }
+
+
+// ==========================================
+// KAD REKOD PENYELENGGARAAN UNTUK TELEFON
+// ==========================================
+
+function renderMaintenanceMobileCards() {
+
+    const container =
+        document.getElementById('maintenanceMobileCards');
+
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    // JIKA BELUM ADA REKOD
+    if (maintenanceRecords.length === 0) {
+
+        container.innerHTML = `
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-center">
+
+                <div class="w-12 h-12 mx-auto bg-white rounded-xl flex items-center justify-center text-slate-400 mb-3">
+                    <i class="fa-solid fa-clipboard-list text-xl"></i>
+                </div>
+
+                <h4 class="font-bold text-navy-950 text-sm">
+                    Belum Ada Rekod Servis
+                </h4>
+
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                    Rekod penyelenggaraan ambulans akan dipaparkan di sini selepas disimpan.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    // FORMAT TARIKH UNTUK PAPARAN
+    const formatDate = date => {
+
+        if (!date) return '-';
+
+        const text = String(date);
+
+        if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+            return text.slice(8, 10) + '/' +
+                   text.slice(5, 7) + '/' +
+                   text.slice(0, 4);
+        }
+
+        return text;
+    };
+
+    // PAPARKAN SETIAP REKOD
+    maintenanceRecords.forEach(m => {
+
+        const amb = ambulances.find(
+            a => a.id === m.ambulanceId
+        );
+
+        const card = document.createElement('div');
+
+        card.className =
+            'bg-white rounded-2xl border border-slate-200 shadow-sm p-4';
+
+        card.innerHTML = `
+            <!-- MAKLUMAT AMBULANS -->
+            <div class="flex items-start justify-between gap-2">
+
+                <div class="flex items-center gap-3 min-w-0">
+
+                    <div class="w-10 h-10 shrink-0 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center">
+                        <i class="fa-solid fa-truck-medical"></i>
+                    </div>
+
+                    <div class="min-w-0">
+                        <h4 class="sjam-maint-reg font-bold text-navy-950 text-sm break-words"></h4>
+
+                        <p class="sjam-maint-model text-xs text-slate-500 mt-1 break-words"></p>
+                    </div>
+
+                </div>
+
+                <span class="shrink-0 bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-1 rounded-lg text-[10px] font-semibold">
+                    Direkod
+                </span>
+
+            </div>
+
+            <!-- JENIS SERVIS -->
+            <div class="bg-slate-50 rounded-xl p-3 mt-4">
+
+                <p class="text-[11px] text-slate-500">
+                    Jenis Servis
+                </p>
+
+                <p class="sjam-maint-type font-bold text-navy-950 text-sm mt-1 break-words"></p>
+
+            </div>
+
+            <!-- BUTIRAN SERVIS -->
+            <div class="grid grid-cols-2 gap-3 mt-4">
+
+                <div>
+                    <p class="text-[11px] text-slate-500">
+                        Tarikh Servis
+                    </p>
+                    <p class="sjam-maint-date font-semibold text-slate-800 text-xs mt-1"></p>
+                </div>
+
+                <div>
+                    <p class="text-[11px] text-slate-500">
+                        Odometer
+                    </p>
+                    <p class="sjam-maint-km font-semibold text-slate-800 text-xs mt-1"></p>
+                </div>
+
+                <div>
+                    <p class="text-[11px] text-slate-500">
+                        Kos Servis
+                    </p>
+                    <p class="sjam-maint-cost font-bold text-gold-600 text-sm mt-1"></p>
+                </div>
+
+                <div>
+                    <p class="text-[11px] text-slate-500">
+                        Servis Seterusnya
+                    </p>
+                    <p class="sjam-maint-next font-semibold text-blue-600 text-xs mt-1"></p>
+                </div>
+
+            </div>
+
+            <!-- CATATAN JIKA ADA -->
+            <div class="sjam-maint-note-wrap hidden mt-4 bg-slate-50 rounded-xl p-3">
+
+                <p class="text-[11px] font-semibold text-slate-500">
+                    Catatan
+                </p>
+
+                <p class="sjam-maint-note text-xs text-slate-700 mt-1 break-words"></p>
+
+            </div>
+
+            <!-- TINDAKAN -->
+            <div class="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 mt-4">
+
+                <span class="text-[10px] text-slate-400 flex items-center gap-1">
+                    <i class="fa-solid fa-file-invoice"></i>
+                    <span class="sjam-maint-receipt"></span>
+                </span>
+
+                <div class="flex gap-2">
+
+                    <button type="button"
+                        class="sjam-maint-edit bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-xs font-semibold">
+
+                        <i class="fa-solid fa-pen mr-1"></i>
+                        Edit
+                    </button>
+
+                    <button type="button"
+                        class="sjam-maint-delete bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2 rounded-lg text-xs font-semibold">
+
+                        <i class="fa-solid fa-trash mr-1"></i>
+                        Padam
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        // MASUKKAN DATA DENGAN SELAMAT
+        const setText = (selector, value) => {
+            card.querySelector(selector).textContent = value;
+        };
+
+        setText(
+            '.sjam-maint-reg',
+            amb ? amb.regNo : 'Ambulans Dipadam'
+        );
+
+        setText(
+            '.sjam-maint-model',
+            amb ? amb.model : ''
+        );
+
+        setText(
+            '.sjam-maint-type',
+            m.type || '-'
+        );
+
+        setText(
+            '.sjam-maint-date',
+            formatDate(m.date)
+        );
+
+        const km = Number(m.odometer);
+
+        setText(
+            '.sjam-maint-km',
+            m.odometer !== '' &&
+            m.odometer != null &&
+            Number.isFinite(km)
+                ? km.toLocaleString('ms-MY') + ' KM'
+                : '-'
+        );
+
+        const cost = Number(m.cost);
+
+        setText(
+            '.sjam-maint-cost',
+            'RM ' + (
+                Number.isFinite(cost) ? cost : 0
+            ).toLocaleString('ms-MY', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })
+        );
+
+        setText(
+            '.sjam-maint-next',
+            formatDate(m.nextDate)
+        );
+
+        // CATATAN
+        if (m.notes && String(m.notes).trim()) {
+
+            card.querySelector('.sjam-maint-note-wrap')
+                .classList.remove('hidden');
+
+            setText('.sjam-maint-note', m.notes);
+        }
+
+        // STATUS RESIT
+        setText(
+            '.sjam-maint-receipt',
+            m.receiptFileId || m.receiptUrl
+                ? 'Resit dilampirkan'
+                : 'Tiada resit'
+        );
+
+        // FUNGSI EDIT ASAL
+        card.querySelector('.sjam-maint-edit')
+            .addEventListener('click', () => {
+                openEditMaintenance(m.id);
+            });
+
+        // FUNGSI PADAM ASAL
+        card.querySelector('.sjam-maint-delete')
+            .addEventListener('click', () => {
+                deleteMaintenance(m.id);
+            });
+
+        container.appendChild(card);
+
+    });
+
+}
 
         function renderMaintenanceTable() {
             const tbody = document.getElementById('maintenanceTableBody');
