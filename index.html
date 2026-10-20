@@ -578,10 +578,28 @@ display: block !important;
                                     <h3 class="font-heading font-bold text-navy-950 text-lg">Rekod Penyelenggaraan & Servis</h3>
                                     <p class="text-xs text-slate-500">Sejarah servis terakhir, odometer, kos serta catatan juruteknik.</p>
                                 </div>
-                                <button onclick="openAddMaintenanceModal()" class="bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold px-4 py-2 rounded-xl text-xs shadow-sm flex items-center gap-2 transition-all">
-                                    <i class="fa-solid fa-wrench text-xs"></i> Tambah Rekod Servis
-                                </button>
-                            </div>
+                                <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+
+    <!-- PANEL POMEN BAHARU -->
+    <button type="button"
+        onclick="openMechanicPanel()"
+        class="bg-navy-900 hover:bg-navy-800 text-white font-semibold px-4 py-2.5 rounded-xl text-xs shadow-sm flex items-center justify-center gap-2 transition-all">
+
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+        Panel Pomen
+    </button>
+
+    <!-- BUTANG SERVIS ASAL DIKEKALKAN -->
+    <button type="button"
+        onclick="openAddMaintenanceModal()"
+        class="bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold px-4 py-2.5 rounded-xl text-xs shadow-sm flex items-center justify-center gap-2 transition-all">
+
+        <i class="fa-solid fa-wrench text-xs"></i>
+        Tambah Rekod Servis
+    </button>
+
+</div>                           
+ </div>
 
 <div class="overflow-x-auto">
                                 <table class="w-full min-w-[900px] text-left border-collapse">
@@ -767,7 +785,7 @@ display: block !important;
 <!-- 1. SERVIS MINYAK HITAM / ENJIN -->
 <!-- ================================== -->
 
-<div class="rounded-xl border border-blue-200 bg-blue-50/30 p-3 sm:p-4 space-y-3">
+<div class="hidden rounded-xl border border-blue-200 bg-blue-50/30 p-3 sm:p-4 space-y-3">
 
     <h4 class="font-bold text-sm text-blue-800">
         <i class="fa-solid fa-droplet mr-1"></i>
@@ -806,10 +824,9 @@ display: block !important;
         </label>
 
         <input type="date"
-            id="ambNextService"
-            required
-            class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm">
-    </div>
+    id="ambNextService"
+    class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm">   
+ </div>
 
     <!-- KM SETERUSNYA -->
     <div>
@@ -837,7 +854,7 @@ display: block !important;
 <!-- 2. SERVIS MINYAK GEAR -->
 <!-- ================================== -->
 
-<div class="rounded-xl border border-emerald-200 bg-emerald-50/30 p-3 sm:p-4 space-y-3">
+<div class="hidden rounded-xl border border-emerald-200 bg-emerald-50/30 p-3 sm:p-4 space-y-3">
 
     <h4 class="font-bold text-sm text-emerald-800">
         <i class="fa-solid fa-gears mr-1"></i>
@@ -914,6 +931,174 @@ display: block !important;
             </form>
         </div>
     </div>
+
+
+<!-- PANEL POMEN SJAM - BAHARU -->
+<div id="mechanicModal"
+     class="fixed inset-0 z-50 hidden flex items-center justify-center bg-navy-950/60 backdrop-blur-sm p-3 sm:p-4">
+
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90dvh] overflow-y-auto p-4 sm:p-6 space-y-4">
+
+        <!-- HEADER -->
+        <div class="flex items-start justify-between gap-3 border-b border-slate-200 pb-4">
+            <div>
+                <h3 class="font-heading font-bold text-navy-950 text-lg">
+                    <i class="fa-solid fa-screwdriver-wrench text-gold-600 mr-2"></i>
+                    Panel Pomen
+                </h3>
+                <p class="text-xs text-slate-500 mt-1">
+                    Pengurusan Servis & Pembaikan Ambulans
+                </p>
+            </div>
+
+            <button type="button"
+                onclick="closeModal('mechanicModal')"
+                class="text-slate-400 hover:text-red-500 p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- PILIH AMBULANS -->
+        <div>
+            <label class="block text-xs font-bold text-slate-700 mb-2">
+                Pilih Ambulans
+            </label>
+            <select id="mechanicAmbulanceId"
+                onchange="loadMechanicOilData()"
+                class="w-full px-3 py-3 border border-slate-200 bg-slate-50 rounded-xl text-sm">
+            </select>
+        </div>
+
+        <!-- MINYAK HITAM -->
+        <details class="group rounded-2xl border border-blue-200 bg-blue-50/30 overflow-hidden">
+
+            <summary class="flex items-center gap-3 p-4 cursor-pointer text-blue-800 font-bold text-sm">
+                <i class="fa-solid fa-droplet text-blue-600"></i>
+                <span>1. Servis Minyak Hitam</span>
+                <i class="fa-solid fa-chevron-down ml-auto transition-transform group-open:rotate-180"></i>
+            </summary>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 pb-4">
+
+                <label class="block text-xs font-semibold">
+                    Tarikh Tukar Terakhir
+                    <input type="date" id="mechEngineLastDate"
+                        class="block w-full mt-2 p-3 bg-white border rounded-xl text-sm">
+                </label>
+
+                <label class="block text-xs font-semibold">
+                    Odometer Terakhir (KM)
+                    <input type="number" id="mechEngineLastKM"
+                        min="0" step="1"
+                        placeholder="Contoh: 48780"
+                        class="block w-full mt-2 p-3 bg-white border rounded-xl text-sm">
+                </label>
+
+                <label class="block text-xs font-semibold">
+                    Tarikh Tukar Seterusnya
+                    <input type="date" id="mechEngineNextDate"
+                        class="block w-full mt-2 p-3 bg-white border rounded-xl text-sm">
+                </label>
+
+                <label class="block text-xs font-semibold">
+                    Odometer Seterusnya (KM)
+                    <input type="number" id="mechEngineNextKM"
+                        min="0" step="1"
+                        placeholder="Contoh: 55780"
+                        class="block w-full mt-2 p-3 bg-white border rounded-xl text-sm">
+                </label>
+
+                <button type="button"
+                    onclick="saveMechanicOil('engine')"
+                    class="sm:col-span-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-xl transition-all">
+                    <i class="fa-solid fa-floppy-disk mr-1"></i>
+                    Simpan Minyak Hitam
+                </button>
+
+            </div>
+        </details>
+
+        <!-- MINYAK GEAR -->
+        <details class="group rounded-2xl border border-emerald-200 bg-emerald-50/30 overflow-hidden">
+
+            <summary class="flex items-center gap-3 p-4 cursor-pointer text-emerald-800 font-bold text-sm">
+                <i class="fa-solid fa-gears text-emerald-600"></i>
+                <span>2. Servis Minyak Gear</span>
+                <i class="fa-solid fa-chevron-down ml-auto transition-transform group-open:rotate-180"></i>
+            </summary>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 pb-4">
+
+                <label class="block text-xs font-semibold">
+                    Tarikh Tukar Terakhir
+                    <input type="date" id="mechGearLastDate"
+                        class="block w-full mt-2 p-3 bg-white border rounded-xl text-sm">
+                </label>
+
+                <label class="block text-xs font-semibold">
+                    Odometer Terakhir (KM)
+                    <input type="number" id="mechGearLastKM"
+                        min="0" step="1"
+                        placeholder="Contoh: 40000"
+                        class="block w-full mt-2 p-3 bg-white border rounded-xl text-sm">
+                </label>
+
+                <label class="block text-xs font-semibold">
+                    Tarikh Tukar Seterusnya
+                    <input type="date" id="mechGearNextDate"
+                        class="block w-full mt-2 p-3 bg-white border rounded-xl text-sm">
+                </label>
+
+                <label class="block text-xs font-semibold">
+                    Odometer Seterusnya (KM)
+                    <input type="number" id="mechGearNextKM"
+                        min="0" step="1"
+                        placeholder="Contoh: 80000"
+                        class="block w-full mt-2 p-3 bg-white border rounded-xl text-sm">
+                </label>
+
+                <button type="button"
+                    onclick="saveMechanicOil('gear')"
+                    class="sm:col-span-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl transition-all">
+                    <i class="fa-solid fa-floppy-disk mr-1"></i>
+                    Simpan Minyak Gear
+                </button>
+
+            </div>
+        </details>
+
+        <!-- KEROSAKAN LAIN -->
+        <details class="group rounded-2xl border border-amber-200 bg-amber-50/30 overflow-hidden">
+
+            <summary class="flex items-center gap-3 p-4 cursor-pointer text-amber-800 font-bold text-sm">
+                <i class="fa-solid fa-wrench text-amber-600"></i>
+                <span>3. Kerosakan / Pembaikan Lain</span>
+                <i class="fa-solid fa-chevron-down ml-auto transition-transform group-open:rotate-180"></i>
+            </summary>
+
+            <div class="px-4 pb-4 space-y-3">
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Rekod kerosakan, pembaikan, kos, catatan
+                    dan muat naik resit atau invois.
+                </p>
+
+                <button type="button"
+                    onclick="openMaintenanceFromMechanic()"
+                    class="w-full bg-amber-500 hover:bg-amber-600 text-navy-950 font-bold text-xs py-3 px-3 rounded-xl transition-all">
+                    <i class="fa-solid fa-clipboard-list mr-1"></i>
+                    Buka Borang Pembaikan
+                </button>
+            </div>
+
+        </details>
+
+        <p class="text-[11px] text-slate-400 text-center">
+            SJAM Kota Bharu | Rekod Penyelenggaraan Ambulans
+        </p>
+
+    </div>
+</div>
+
 
 <!-- Modal: Add / Edit Maintenance -->
     <div id="maintenanceModal" class="fixed inset-0 bg-navy-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -2115,6 +2300,88 @@ function saveAmbulance(event) {
             }
         }
 
+
+// ======================================
+// PANEL POMEN - FUNGSI PAPARAN
+// ======================================
+
+function openMechanicPanel() {
+
+    if (ambulances.length === 0) {
+        showMessage(
+            'Tiada Ambulans',
+            'Daftar ambulans terlebih dahulu.',
+            'error'
+        );
+        return;
+    }
+
+    const select =
+        document.getElementById('mechanicAmbulanceId');
+
+    select.innerHTML = '';
+
+    ambulances.forEach(amb => {
+        const option = document.createElement('option');
+        option.value = amb.id;
+        option.textContent = `${amb.regNo} - ${amb.model}`;
+        select.appendChild(option);
+    });
+
+    // Tutup semua kotak ketika panel dibuka
+    document.querySelectorAll('#mechanicModal details')
+        .forEach(box => box.open = false);
+
+    loadMechanicOilData();
+
+    document.getElementById('mechanicModal')
+        .classList.remove('hidden');
+}
+
+
+// PAPARKAN REKOD FIREBASE SEDIA ADA
+function loadMechanicOilData() {
+
+    const id =
+        document.getElementById('mechanicAmbulanceId').value;
+
+    const amb = ambulances.find(a => a.id === id);
+
+    if (!amb) return;
+
+    const fields = {
+        mechEngineLastDate: amb.engineOilLastDate || '',
+        mechEngineLastKM: amb.engineOilLastOdometer ?? '',
+        mechEngineNextDate: amb.nextService || '',
+        mechEngineNextKM: amb.nextServiceOdometer ?? '',
+
+        mechGearLastDate: amb.gearOilLastDate || '',
+        mechGearLastKM: amb.gearOilLastOdometer ?? '',
+        mechGearNextDate: amb.gearOilNextDate || '',
+        mechGearNextKM: amb.gearOilNextOdometer ?? ''
+    };
+
+    Object.entries(fields).forEach(([fieldId, fieldValue]) => {
+        document.getElementById(fieldId).value = fieldValue;
+    });
+}
+
+
+// GUNAKAN BORANG PEMBAIKAN ASAL
+function openMaintenanceFromMechanic() {
+
+    const ambulanceId =
+        document.getElementById('mechanicAmbulanceId').value;
+
+    closeModal('mechanicModal');
+
+    openAddMaintenanceModal();
+
+    document.getElementById('maintAmbulanceId').value =
+        ambulanceId;
+}
+
+
         function openAddMaintenanceModal() {
     sjamClearReceipt();
     document.getElementById('maintenanceModalTitle').innerText = 'Rekod Servis Baharu';            document.getElementById('editMaintId').value = '';
@@ -2211,9 +2478,12 @@ function saveAmbulance(event) {
         function exportICSFile() {
             let icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Ambulance Schedule Pro 360//MS\n";
             ambulances.forEach(amb => {
-                const servDateClean = amb.nextService.replace(/-/g, '');
-                const puspDateClean = amb.nextPuspakom.replace(/-/g, '');
-                icsContent += `BEGIN:VEVENT\nSUMMARY:Servis Ambulans ${amb.regNo}\nDESCRIPTION:Servis untuk model ${amb.model} di ${amb.location}\nDTSTART:${servDateClean}\nDTEND:${servDateClean}\nEND:VEVENT\n`;
+                const servDateClean = (amb.nextService || '').replace(/-/g, '');
+const puspDateClean = (amb.nextPuspakom || '').replace(/-/g, '');
+
+if (servDateClean) {
+    icsContent += `BEGIN:VEVENT\nSUMMARY:Servis Ambulans ${amb.regNo}\nDESCRIPTION:Servis untuk model ${amb.model} di ${amb.location}\nDTSTART:${servDateClean}\nDTEND:${servDateClean}\nEND:VEVENT\n`;
+}
                 icsContent += `BEGIN:VEVENT\nSUMMARY:Pemeriksaan PUSPAKOM ${amb.regNo}\nDESCRIPTION:Pemeriksaan berkanun PUSPAKOM ${amb.model}\nDTSTART:${puspDateClean}\nDTEND:${puspDateClean}\nEND:VEVENT\n`;
             });
             icsContent += "END:VCALENDAR";
@@ -2530,45 +2800,14 @@ window.saveAmbulance = async function(event) {
     const id = editId || newId('amb');
 
     
+
 const record = {
 
-    // MAKLUMAT AMBULANS ASAL
+    // MAKLUMAT PENTADBIR SAHAJA
     regNo: value('ambRegNo'),
     model: value('ambModel'),
     location: value('ambLocation'),
-
-    // MINYAK HITAM TERAKHIR
-    engineOilLastDate:
-        value('ambEngineOilLastDate'),
-
-    engineOilLastOdometer:
-        value('ambEngineOilLastOdometer'),
-
-    // MINYAK HITAM SETERUSNYA
-    // MEDAN LAMA DIKEKALKAN
-    nextService:
-        value('ambNextService'),
-
-    nextServiceOdometer:
-        value('ambNextServiceOdometer'),
-
-    // MINYAK GEAR TERAKHIR
-    gearOilLastDate:
-        value('ambGearOilLastDate'),
-
-    gearOilLastOdometer:
-        value('ambGearOilLastOdometer'),
-
-    // MINYAK GEAR SETERUSNYA
-    gearOilNextDate:
-        value('ambGearOilNextDate'),
-
-    gearOilNextOdometer:
-        value('ambGearOilNextOdometer'),
-
-    // PUSPAKOM ASAL
-    nextPuspakom:
-        value('ambNextPuspakom')
+    nextPuspakom: value('ambNextPuspakom')
 
 };
 
@@ -2576,10 +2815,13 @@ const record = {
         editId
             ? updateDoc(doc(db, 'ambulances', id), record)
             : setDoc(doc(db, 'ambulances', id), {
-                id,
-                ...record
-            })
-    );
+    id,
+    ...record,
+    nextService: '',
+    gearOilNextDate: ''
+})
+
+);
 
     if (!success) return;
 
@@ -2591,6 +2833,139 @@ const record = {
         'success'
     );
 };
+
+
+// ======================================
+// SIMPAN JADUAL MINYAK OLEH POMEN
+// ======================================
+
+window.saveMechanicOil = async function(type) {
+
+    const id = value('mechanicAmbulanceId');
+
+    if (!id || !ambulances.some(a => a.id === id)) {
+        window.showMessage(
+            'Ralat',
+            'Sila pilih ambulans yang sah.',
+            'error'
+        );
+        return;
+    }
+
+    let record;
+
+    if (type === 'engine') {
+
+        record = {
+            engineOilLastDate:
+                value('mechEngineLastDate'),
+
+            engineOilLastOdometer:
+                value('mechEngineLastKM'),
+
+            nextService:
+                value('mechEngineNextDate'),
+
+            nextServiceOdometer:
+                value('mechEngineNextKM')
+        };
+
+    } else if (type === 'gear') {
+
+        record = {
+            gearOilLastDate:
+                value('mechGearLastDate'),
+
+            gearOilLastOdometer:
+                value('mechGearLastKM'),
+
+            gearOilNextDate:
+                value('mechGearNextDate'),
+
+            gearOilNextOdometer:
+                value('mechGearNextKM')
+        };
+
+    } else {
+        return;
+    }
+
+    // ELAK SIMPAN REKOD KOSONG
+    if (!Object.values(record).some(v => v !== '')) {
+
+        window.showMessage(
+            'Maklumat Kosong',
+            'Sila isi maklumat servis terlebih dahulu.',
+            'error'
+        );
+        return;
+    }
+
+    // SEMAK TARIKH
+    const lastDate = type === 'engine'
+        ? record.engineOilLastDate
+        : record.gearOilLastDate;
+
+    const nextDate = type === 'engine'
+        ? record.nextService
+        : record.gearOilNextDate;
+
+    if (lastDate && nextDate && nextDate < lastDate) {
+
+        window.showMessage(
+            'Tarikh Tidak Sah',
+            'Tarikh servis seterusnya tidak boleh lebih awal.',
+            'error'
+        );
+        return;
+    }
+
+    // SEMAK ODOMETER
+    const lastKM = type === 'engine'
+        ? record.engineOilLastOdometer
+        : record.gearOilLastOdometer;
+
+    const nextKM = type === 'engine'
+        ? record.nextServiceOdometer
+        : record.gearOilNextOdometer;
+
+    if (
+        [lastKM, nextKM].some(km =>
+            km !== '' &&
+            (!Number.isFinite(Number(km)) || Number(km) < 0)
+        ) ||
+        (
+            lastKM !== '' &&
+            nextKM !== '' &&
+            Number(nextKM) < Number(lastKM)
+        )
+    ) {
+
+        window.showMessage(
+            'Odometer Tidak Sah',
+            'Sila semak bacaan kilometer servis.',
+            'error'
+        );
+        return;
+    }
+
+    // SIMPAN MEDAN MINYAK DIPILIH SAHAJA
+    const success = await performWrite(() =>
+        updateDoc(doc(db, 'ambulances', id), record)
+    );
+
+    if (!success) return;
+
+    window.showMessage(
+        'Berjaya!',
+        type === 'engine'
+            ? 'Jadual minyak hitam disimpan dalam Firebase.'
+            : 'Jadual minyak gear disimpan dalam Firebase.',
+        'success'
+    );
+
+};
+
 
 // PADAM AMBULANS
 window.deleteAmbulance = async function(id) {
@@ -2874,3 +3249,4 @@ window.savePuspakom = async function(event) {
 </script>
 </body>
 </html>
+
