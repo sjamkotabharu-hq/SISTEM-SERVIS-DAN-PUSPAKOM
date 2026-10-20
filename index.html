@@ -2070,11 +2070,14 @@ document.getElementById('ambGearOilNextOdometer').value =
 document.getElementById('ambNextPuspakom').value =
     amb.nextPuspakom || '';
 
+
 // BUKA MODAL ASAL
 document.getElementById('ambulanceModal').classList.remove('hidden');
 
-        function saveAmbulance(event) {
-            event.preventDefault();
+} // TAMAT FUNGSI openEditAmbulance
+
+function saveAmbulance(event) {
+    event.preventDefault();
             const id = document.getElementById('editAmbulanceId').value;
             const regNo = document.getElementById('ambRegNo').value;
             const model = document.getElementById('ambModel').value;
