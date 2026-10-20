@@ -626,23 +626,31 @@ display: block !important;
         </div>
 
         <!-- TERTUNGGAK -->
-        <div class="min-w-0 rounded-2xl border border-red-100 bg-red-50/60 p-3 sm:p-4 space-y-2">
-            <div class="flex items-center gap-2 text-red-700">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <span class="text-xs font-bold">Tertunggak</span>
-            </div>
+        <button type="button"
+    onclick="jumpToOverdueCalendar()"
+    class="w-full min-w-0 text-left rounded-2xl border border-red-100 bg-red-50/60 p-3 sm:p-4 space-y-2 cursor-pointer hover:bg-red-100/70 active:scale-[0.98] transition-all focus:outline-none focus:ring-2 focus:ring-red-400">
 
-            <p id="calRemOverdueCount"
-               class="font-heading font-bold text-red-700 text-2xl">
-                0
-            </p>
+    <div class="flex items-center gap-2 text-red-700">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span class="text-xs font-bold">Tertunggak</span>
+    </div>
 
-            <p id="calRemOverdueInfo"
-               class="text-xs text-slate-600 break-words">
-                Tiada tunggakan
-            </p>
-        </div>
+    <p id="calRemOverdueCount"
+       class="font-heading font-bold text-red-700 text-2xl">
+        0
+    </p>
 
+    <p id="calRemOverdueInfo"
+       class="text-xs text-slate-600 break-words">
+        Tiada tunggakan
+    </p>
+
+    <p class="text-[11px] font-semibold text-red-600">
+        <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>
+        Tekan untuk lihat tarikh
+    </p>
+
+</button>
     </div>
 
     <p class="text-xs text-slate-500">
@@ -1978,6 +1986,95 @@ function renderCalendarReminderPanel() {
         overdueVehicles.size === 0
             ? 'Tiada tunggakan'
             : `${overdueEvents.length} jadual memerlukan perhatian`;
+}
+
+// FUNGSI KALENDAR ASAL DIKEKALKAN
+// PERGI TERUS KE TARIKH TERTUNGGAK
+function jumpToOverdueCalendar() {
+
+    const overdue = [];
+
+    const fields = [
+        'nextService',
+        'gearOilNextDate',
+        'nextPuspakom'
+    ];
+
+    ambulances.forEach(amb => {
+
+        fields.forEach(field => {
+
+            const date = amb[field];
+
+            if (
+                typeof date !== 'string' ||
+                !/^\d{4}-\d{2}-\d{2}$/.test(date)
+            ) return;
+
+            const days = calculateDaysRemaining(date);
+
+            if (Number.isFinite(days) && days < 0) {
+                overdue.push({ date, days });
+            }
+
+        });
+
+    });
+
+    if (overdue.length === 0) {
+        showMessage(
+            'Tiada Tunggakan',
+            'Tiada jadual tertunggak buat masa ini.',
+            'info'
+        );
+        return;
+    }
+
+    // PILIH TARIKH TERTUNGGAK PALING HAMPIR
+    overdue.sort((a, b) => b.days - a.days);
+
+    const dateStr = overdue[0].date;
+
+    const [year, month, day] =
+        dateStr.split('-').map(Number);
+
+    // BUKA BULAN YANG BETUL
+    currentCalendarDate = new Date(year, month - 1, 1);
+
+    // PAPAR KALENDAR ASAL
+    renderCalendar();
+
+    // BUKA MAKLUMAT TARIKH DIPILIH
+    selectCalendarDate(dateStr);
+
+    // TANDAKAN KOTAK TARIKH MERAH
+    const firstDayIndex =
+        new Date(year, month - 1, 1).getDay();
+
+    const grid =
+        document.getElementById('calendarGridContainer');
+
+    const cell =
+        grid.children[7 + firstDayIndex + day - 1];
+
+    if (cell) {
+        cell.classList.remove('bg-white');
+
+        cell.classList.add(
+            'bg-red-50',
+            'ring-2',
+            'ring-red-500',
+            'ring-inset'
+        );
+    }
+
+    // SKROL TERUS KE BAHAGIAN KALENDAR
+    document.getElementById('calendarMonthTitle')
+        .scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+
 }
 
 // FUNGSI KALENDAR ASAL DIKEKALKAN
@@ -4274,4 +4371,5 @@ window.savePuspakom = async function(event) {
 </script>
 </body>
 </html>
+
 
