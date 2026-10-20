@@ -164,6 +164,33 @@ display: block !important;
 
 }
  
+
+/* REKA BENTUK BORANG PENTADBIR SAHAJA */
+
+#ambulanceModal #ambulanceForm > div > input[type="text"],
+#ambulanceModal #ambulanceForm > div > input[type="date"] {
+
+    min-height: 48px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+#ambulanceModal #ambulanceForm > div > input:focus {
+
+    outline: none;
+    border-color: #d4af37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+#ambulanceModal #ambulanceForm > div > label {
+
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 8px;
+}
+
 </style>
 </head>
 <body class="bg-navy-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
@@ -759,11 +786,61 @@ display: block !important;
 
 <!-- Modal: Add / Edit Ambulance -->
     <div id="ambulanceModal" class="fixed inset-0 bg-navy-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full max-h-[90dvh] overflow-y-auto p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h3 id="ambulanceModalTitle" class="font-heading font-bold text-navy-950 text-lg">Tambah Ambulans Baharu</h3>
-                <button onclick="closeModal('ambulanceModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
-            </div>
+        <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90dvh] overflow-y-auto p-4 sm:p-6 shadow-2xl border border-slate-100 space-y-4">
+            
+<!-- HEADER PENDAFTARAN AMBULANS -->
+<div class="flex items-center justify-between gap-3 border-b border-slate-100 pb-4">
+
+    <div class="flex items-center gap-3 min-w-0">
+
+        <div class="w-11 h-11 shrink-0 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center shadow-sm">
+            <i class="fa-solid fa-truck-medical text-lg"></i>
+        </div>
+
+        <div class="min-w-0">
+            <h3 id="ambulanceModalTitle"
+                class="font-heading font-bold text-navy-950 text-lg leading-tight">
+                Tambah Ambulans Baharu
+            </h3>
+
+            <p class="text-xs text-slate-500 mt-1">
+                SJAM Kota Bharu
+            </p>
+        </div>
+
+    </div>
+
+    <button type="button"
+        onclick="closeModal('ambulanceModal')"
+        class="shrink-0 w-9 h-9 rounded-lg bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-600 transition-all">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+
+</div>
+
+<!-- PILIHAN PENTADBIR / POMEN -->
+<div class="grid grid-cols-2 gap-1 bg-slate-100 p-1 rounded-xl">
+
+    <div class="bg-white text-navy-950 font-bold text-xs sm:text-sm py-3 px-2 rounded-lg shadow-sm text-center flex items-center justify-center gap-2">
+        <i class="fa-solid fa-user-tie text-gold-600"></i>
+        Pentadbir SJAM
+    </div>
+
+    <button type="button"
+        onclick="closeModal('ambulanceModal'); if (typeof openMechanicPanel === 'function' && ambulances.length > 0) { openMechanicPanel(); } else { switchTab('maintenance'); }"
+        class="text-slate-500 hover:text-navy-950 hover:bg-white font-semibold text-xs sm:text-sm py-3 px-2 rounded-lg transition-all flex items-center justify-center gap-2">
+
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+        Pomen / Mekanik
+
+    </button>
+
+</div>
+
+<!-- PENERANGAN -->
+<p class="text-xs text-slate-500 leading-relaxed">
+    Pentadbir hanya perlu mengisi empat maklumat asas ambulans.
+</p>
             <form id="ambulanceForm" onsubmit="saveAmbulance(event)" class="space-y-4">
                 <input type="hidden" id="editAmbulanceId">
                 <div>
@@ -924,10 +1001,50 @@ display: block !important;
     <input type="date" id="ambNextPuspakom" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gold-500">
 </div>
 
-                <div class="flex justify-end gap-2 pt-3">
-                    <button type="button" onclick="closeModal('ambulanceModal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-all">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-gold-500 hover:bg-gold-600 text-navy-950 text-xs font-semibold rounded-xl transition-all shadow-sm">Simpan Rekod</button>
-                </div>
+                
+<!-- MAKLUMAN PENGURUSAN SERVIS -->
+<div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+
+    <div class="flex items-start gap-3">
+
+        <div class="w-9 h-9 shrink-0 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+            <i class="fa-solid fa-circle-info"></i>
+        </div>
+
+        <div class="min-w-0">
+
+            <h4 class="font-bold text-navy-900 text-sm">
+                Maklumat servis diurus oleh pomen
+            </h4>
+
+            <p class="text-xs text-slate-500 leading-relaxed mt-1">
+                Jadual minyak hitam, minyak gear dan rekod kerosakan akan diisi oleh pomen melalui Panel Pomen.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- BUTANG SIMPAN ASAL DIKEKALKAN -->
+<div class="flex justify-end gap-2 pt-3">
+
+    <button type="button"
+        onclick="closeModal('ambulanceModal')"
+        class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-all">
+        Batal
+    </button>
+
+    <button type="submit"
+        class="px-5 py-2.5 bg-gold-500 hover:bg-gold-600 text-navy-950 text-xs font-bold rounded-xl transition-all shadow-sm">
+
+        <i class="fa-solid fa-floppy-disk mr-1"></i>
+        Simpan Rekod
+
+    </button>
+
+</div>
             </form>
         </div>
     </div>
