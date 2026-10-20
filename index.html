@@ -551,6 +551,107 @@ display: block !important;
 
 </div>
 
+<!-- PANEL AKTIVITI & PERINGATAN AMBULANS -->
+<div id="calendarReminderPanel" class="space-y-4">
+
+    <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center">
+            <i class="fa-solid fa-calendar-check"></i>
+        </div>
+
+        <div class="min-w-0">
+            <h3 class="font-heading font-bold text-navy-950 text-lg">
+                Aktiviti & Peringatan
+            </h3>
+            <p class="text-xs text-slate-500">
+                Pemantauan servis dan PUSPAKOM ambulans
+            </p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+
+        <!-- MINYAK HITAM -->
+        <div class="min-w-0 rounded-2xl border border-blue-100 bg-blue-50/60 p-3 sm:p-4 space-y-2">
+            <div class="flex items-center gap-2 text-blue-700">
+                <i class="fa-solid fa-droplet"></i>
+                <span class="text-xs font-bold">Minyak Hitam</span>
+            </div>
+
+            <p id="calRemEngineVehicle"
+               class="font-bold text-navy-950 text-sm break-words">
+                Belum direkod
+            </p>
+
+            <p id="calRemEngineInfo"
+               class="text-xs text-slate-600 break-words">
+                Tiada jadual
+            </p>
+        </div>
+
+        <!-- MINYAK GEAR -->
+        <div class="min-w-0 rounded-2xl border border-emerald-100 bg-emerald-50/60 p-3 sm:p-4 space-y-2">
+            <div class="flex items-center gap-2 text-emerald-700">
+                <i class="fa-solid fa-gears"></i>
+                <span class="text-xs font-bold">Minyak Gear</span>
+            </div>
+
+            <p id="calRemGearVehicle"
+               class="font-bold text-navy-950 text-sm break-words">
+                Belum direkod
+            </p>
+
+            <p id="calRemGearInfo"
+               class="text-xs text-slate-600 break-words">
+                Tiada jadual
+            </p>
+        </div>
+
+        <!-- PUSPAKOM -->
+        <div class="min-w-0 rounded-2xl border border-amber-100 bg-amber-50/60 p-3 sm:p-4 space-y-2">
+            <div class="flex items-center gap-2 text-amber-800">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span class="text-xs font-bold">PUSPAKOM</span>
+            </div>
+
+            <p id="calRemPuspakomVehicle"
+               class="font-bold text-navy-950 text-sm break-words">
+                Belum direkod
+            </p>
+
+            <p id="calRemPuspakomInfo"
+               class="text-xs text-slate-600 break-words">
+                Tiada jadual
+            </p>
+        </div>
+
+        <!-- TERTUNGGAK -->
+        <div class="min-w-0 rounded-2xl border border-red-100 bg-red-50/60 p-3 sm:p-4 space-y-2">
+            <div class="flex items-center gap-2 text-red-700">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span class="text-xs font-bold">Tertunggak</span>
+            </div>
+
+            <p id="calRemOverdueCount"
+               class="font-heading font-bold text-red-700 text-2xl">
+                0
+            </p>
+
+            <p id="calRemOverdueInfo"
+               class="text-xs text-slate-600 break-words">
+                Tiada tunggakan
+            </p>
+        </div>
+
+    </div>
+
+    <p class="text-xs text-slate-500">
+        <i class="fa-solid fa-circle-info mr-1"></i>
+        Tekan tarikh pada kalendar untuk melihat aktiviti tarikh dipilih.
+    </p>
+
+</div>
+
 <!-- Selected Date Details Drawer / Card -->
                         <div id="calendarDayDetails" class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 hidden">
                             <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
@@ -1591,7 +1692,8 @@ function saveData() {
             renderDashboardStats();
             renderSmartCountdown();
             renderCalendar();
-            renderAmbulanceTable();
+renderCalendarReminderPanel();
+renderAmbulanceTable();
 renderAmbulanceMobileCards();
 renderMaintenanceTable();
 renderMaintenanceMobileCards();
@@ -1769,7 +1871,117 @@ ambulances.forEach(amb => {
             });
         }
 
-        function renderCalendar() {
+        // PANEL PERINGATAN - BACA DATA FIREBASE SEDIA ADA
+function renderCalendarReminderPanel() {
+
+    const groups = [
+        { field: 'nextService', section: 'Engine' },
+        { field: 'gearOilNextDate', section: 'Gear' },
+        { field: 'nextPuspakom', section: 'Puspakom' }
+    ];
+
+    const events = [];
+
+    ambulances.forEach((amb, index) => {
+
+        groups.forEach(group => {
+
+            const date = amb[group.field];
+
+            if (
+                typeof date !== 'string' ||
+                !/^\d{4}-\d{2}-\d{2}$/.test(date)
+            ) return;
+
+            const days = calculateDaysRemaining(date);
+
+            if (!Number.isFinite(days)) return;
+
+            events.push({
+                section: group.section,
+                date,
+                days,
+                regNo: amb.regNo || 'Ambulans',
+                vehicleId: amb.id || `amb-${index}`
+            });
+
+        });
+
+    });
+
+    const formatDate = date => {
+        const [year, month, day] = date.split('-');
+        return `${day}/${month}/${year}`;
+    };
+
+    groups.forEach(group => {
+
+        const list = events.filter(
+            event => event.section === group.section
+        );
+
+        const upcoming = list
+            .filter(event => event.days >= 0)
+            .sort((a, b) => a.days - b.days);
+
+        const overdue = list
+            .filter(event => event.days < 0)
+            .sort((a, b) => b.days - a.days);
+
+        const selected = upcoming[0] || overdue[0];
+
+        const vehicle = document.getElementById(
+            `calRem${group.section}Vehicle`
+        );
+
+        const info = document.getElementById(
+            `calRem${group.section}Info`
+        );
+
+        if (!vehicle || !info) return;
+
+        if (!selected) {
+            vehicle.textContent = 'Belum direkod';
+            info.textContent = 'Tiada jadual';
+            return;
+        }
+
+        vehicle.textContent = selected.regNo;
+
+        let status = '';
+
+        if (selected.days < 0) {
+            status = `Tertunggak ${Math.abs(selected.days)} hari`;
+        } else if (selected.days === 0) {
+            status = 'Hari ini';
+        } else {
+            status = `${selected.days} hari lagi`;
+        }
+
+        info.textContent =
+            `${formatDate(selected.date)} • ${status}`;
+
+    });
+
+    const overdueEvents = events.filter(
+        event => event.days < 0
+    );
+
+    const overdueVehicles = new Set(
+        overdueEvents.map(event => event.vehicleId)
+    );
+
+    document.getElementById('calRemOverdueCount').textContent =
+        overdueVehicles.size;
+
+    document.getElementById('calRemOverdueInfo').textContent =
+        overdueVehicles.size === 0
+            ? 'Tiada tunggakan'
+            : `${overdueEvents.length} jadual memerlukan perhatian`;
+}
+
+// FUNGSI KALENDAR ASAL DIKEKALKAN
+function renderCalendar() {
             const year = currentCalendarDate.getFullYear();
             const month = currentCalendarDate.getMonth();
 
@@ -4062,5 +4274,4 @@ window.savePuspakom = async function(event) {
 </script>
 </body>
 </html>
-
 
