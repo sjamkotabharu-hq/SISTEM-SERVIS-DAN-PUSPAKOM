@@ -432,15 +432,39 @@ display: block !important;
 
 <!-- Smart Countdown Quick List (Top Upcoming) -->
                             <div class="2xl:col-span-2 min-w-0 bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex flex-col">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div>
-                                        <h3 class="font-heading font-bold text-navy-950 text-lg">Smart Countdown & Timeline</h3>
-                                        <p class="text-xs text-slate-500">Aktiviti penyelenggaraan & PUSPAKOM terdekat diatur mengikut urutan masa.</p>
-                                    </div>
-                                    <button onclick="switchTab('calendar')" class="text-xs font-semibold text-gold-600 hover:text-gold-700">Lihat Kalendar →</button>
-                                </div>
+                                <!-- TAJUK SMART COUNTDOWN RESPONSIF -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
 
-<div id="smartCountdownList" class="space-y-3 overflow-y-auto max-h-[380px] pr-1">
+    <div class="flex items-center gap-3 min-w-0">
+
+        <div class="w-12 h-12 shrink-0 rounded-xl bg-navy-950 text-gold-400 flex items-center justify-center text-xl shadow-sm">
+            <i class="fa-solid fa-calendar-check"></i>
+        </div>
+
+        <div class="min-w-0">
+            <h3 class="font-heading font-bold text-navy-950 text-lg leading-tight">
+                Smart Countdown & Timeline
+            </h3>
+
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                Jadual servis dan PUSPAKOM terdekat
+            </p>
+        </div>
+
+    </div>
+
+    <button type="button"
+        onclick="switchTab('calendar')"
+        class="w-full sm:w-auto shrink-0 bg-slate-100 hover:bg-slate-200 text-navy-900 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2">
+
+        <i class="fa-solid fa-calendar-days"></i>
+        Lihat Kalendar
+        <i class="fa-solid fa-arrow-right"></i>
+
+    </button>
+
+</div>
+<div id="smartCountdownList" class="space-y-3 min-w-0">
                                     <!-- Populated dynamically via JS -->
                                 </div>
                             </div>
@@ -1779,300 +1803,284 @@ ambulances.forEach(amb => {
             }
         }
 
-        function renderSmartCountdown() {
-            const container = document.getElementById('smartCountdownList');
-            container.innerHTML = '';
+       function renderSmartCountdown() {
 
-            // Gather all upcoming events
-            
-let events = [];
+    const container =
+        document.getElementById('smartCountdownList');
 
-ambulances.forEach(amb => {
+    if (!container) return;
 
-    // 1. MINYAK HITAM
-    if (amb.nextService) {
-        events.push({
-            regNo: amb.regNo,
-            model: amb.model,
-            type: 'Minyak Hitam',
-            date: amb.nextService,
-            days: calculateDaysRemaining(amb.nextService),
-            badgeColor: 'bg-blue-50 text-blue-700 border-blue-200'
-        });
-    }
-
-    // 2. MINYAK GEAR
-    if (amb.gearOilNextDate) {
-        events.push({
-            regNo: amb.regNo,
-            model: amb.model,
-            type: 'Minyak Gear',
-            date: amb.gearOilNextDate,
-            days: calculateDaysRemaining(amb.gearOilNextDate),
-            badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200'
-        });
-    }
-
-    // 3. PUSPAKOM - KEKAL
-    if (amb.nextPuspakom) {
-        events.push({
-            regNo: amb.regNo,
-            model: amb.model,
-            type: 'Pemeriksaan PUSPAKOM',
-            date: amb.nextPuspakom,
-            days: calculateDaysRemaining(amb.nextPuspakom),
-            badgeColor: 'bg-amber-50 text-amber-700 border-amber-200'
-        });
-    }
-
-});
-
-            // Sort by closest days remaining
-            events.sort((a, b) => a.days - b.days);
-
-            if (events.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">Tiada jadual aktiviti didaftarkan.</p>`;
-                return;
-            }
-
-            events.forEach(ev => {
-                let statusText = '';
-                let statusClass = '';
-                if (ev.days < 0) {
-                    statusText = `Tertunggak ${Math.abs(ev.days)} hari`;
-                    statusClass = 'bg-red-100 text-red-700 border-red-200 font-bold';
-                } else if (ev.days === 0) {
-                    statusText = 'Hari Ini!';
-                    statusClass = 'bg-red-500 text-white font-bold animate-pulse';
-                } else if (ev.days <= 7) {
-                    statusText = `Dalam ${ev.days} hari (Kritikal)`;
-                    statusClass = 'bg-orange-100 text-orange-800 border-orange-200';
-                } else if (ev.days <= 30) {
-                    statusText = `Dalam ${ev.days} hari`;
-                    statusClass = 'bg-blue-100 text-blue-800 border-blue-200';
-                } else {
-                    statusText = `Dalam ${ev.days} hari`;
-                    statusClass = 'bg-slate-100 text-slate-700 border-slate-200';
-                }
-
-                const item = document.createElement('div');
-                item.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-3 min-w-0 p-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-all';
-                item.innerHTML = `
-    <div class="flex items-center gap-3 min-w-0 flex-1">
-        <div class="w-10 h-10 shrink-0 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center text-xs">
-            <i class="fa-solid fa-ambulance"></i>
-        </div>
-        <div class="min-w-0 flex-1">
-            <div class="flex flex-wrap items-center gap-2">
-                <span class="font-bold text-navy-950 text-sm">${ev.regNo}</span>
-                <span class="text-[11px] px-2 py-0.5 rounded-md border ${ev.badgeColor}">${ev.type}</span>
-            </div>
-            <p class="text-xs text-slate-500 mt-1 break-words">${ev.model} • Tarikh: ${ev.date}</p>
-        </div>
-    </div>
-    <span class="self-start sm:self-center shrink-0 text-xs px-2.5 py-1 rounded-lg border ${statusClass}">
-        ${statusText}
-    </span>
-`;               
- container.appendChild(item);
-            });
-        }
-
-        // PANEL PERINGATAN - BACA DATA FIREBASE SEDIA ADA
-function renderCalendarReminderPanel() {
-
-    const groups = [
-        { field: 'nextService', section: 'Engine' },
-        { field: 'gearOilNextDate', section: 'Gear' },
-        { field: 'nextPuspakom', section: 'Puspakom' }
-    ];
+    container.innerHTML = '';
 
     const events = [];
 
-    ambulances.forEach((amb, index) => {
+    // KUMPUL JADUAL SEDIA ADA
+    function addEvent(amb, type, date) {
 
-        groups.forEach(group => {
+        if (!date) return;
 
-            const date = amb[group.field];
+        const days = calculateDaysRemaining(date);
 
-            if (
-                typeof date !== 'string' ||
-                !/^\d{4}-\d{2}-\d{2}$/.test(date)
-            ) return;
+        if (!Number.isFinite(days)) return;
 
-            const days = calculateDaysRemaining(date);
-
-            if (!Number.isFinite(days)) return;
-
-            events.push({
-                section: group.section,
-                date,
-                days,
-                regNo: amb.regNo || 'Ambulans',
-                vehicleId: amb.id || `amb-${index}`
-            });
-
+        events.push({
+            regNo: amb.regNo,
+            model: amb.model,
+            type: type,
+            date: date,
+            days: days
         });
-
-    });
-
-    const formatDate = date => {
-        const [year, month, day] = date.split('-');
-        return `${day}/${month}/${year}`;
-    };
-
-    groups.forEach(group => {
-
-        const list = events.filter(
-            event => event.section === group.section
-        );
-
-        const upcoming = list
-            .filter(event => event.days >= 0)
-            .sort((a, b) => a.days - b.days);
-
-        const overdue = list
-            .filter(event => event.days < 0)
-            .sort((a, b) => b.days - a.days);
-
-        const selected = upcoming[0] || overdue[0];
-
-        const vehicle = document.getElementById(
-            `calRem${group.section}Vehicle`
-        );
-
-        const info = document.getElementById(
-            `calRem${group.section}Info`
-        );
-
-        if (!vehicle || !info) return;
-
-        if (!selected) {
-            vehicle.textContent = 'Belum direkod';
-            info.textContent = 'Tiada jadual';
-            return;
-        }
-
-        vehicle.textContent = selected.regNo;
-
-        let status = '';
-
-        if (selected.days < 0) {
-            status = `Tertunggak ${Math.abs(selected.days)} hari`;
-        } else if (selected.days === 0) {
-            status = 'Hari ini';
-        } else {
-            status = `${selected.days} hari lagi`;
-        }
-
-        info.textContent =
-            `${formatDate(selected.date)} • ${status}`;
-
-    });
-
-    const overdueEvents = events.filter(
-        event => event.days < 0
-    );
-
-    const overdueVehicles = new Set(
-        overdueEvents.map(event => event.vehicleId)
-    );
-
-    document.getElementById('calRemOverdueCount').textContent =
-        overdueVehicles.size;
-
-    document.getElementById('calRemOverdueInfo').textContent =
-        overdueVehicles.size === 0
-            ? 'Tiada tunggakan'
-            : `${overdueEvents.length} jadual memerlukan perhatian`;
-}
-
-// FUNGSI KALENDAR ASAL DIKEKALKAN
-// PERGI TERUS KE TARIKH TERTUNGGAK
-function jumpToOverdueCalendar() {
-
-    const overdue = [];
-
-    const fields = [
-        'nextService',
-        'gearOilNextDate',
-        'nextPuspakom'
-    ];
+    }
 
     ambulances.forEach(amb => {
 
-        fields.forEach(field => {
+        // MINYAK HITAM
+        addEvent(
+            amb,
+            'Minyak Hitam',
+            amb.nextService
+        );
 
-            const date = amb[field];
+        // MINYAK GEAR
+        addEvent(
+            amb,
+            'Minyak Gear',
+            amb.gearOilNextDate
+        );
 
-            if (
-                typeof date !== 'string' ||
-                !/^\d{4}-\d{2}-\d{2}$/.test(date)
-            ) return;
-
-            const days = calculateDaysRemaining(date);
-
-            if (Number.isFinite(days) && days < 0) {
-                overdue.push({ date, days });
-            }
-
-        });
+        // PUSPAKOM
+        addEvent(
+            amb,
+            'PUSPAKOM',
+            amb.nextPuspakom
+        );
 
     });
 
-    if (overdue.length === 0) {
-        showMessage(
-            'Tiada Tunggakan',
-            'Tiada jadual tertunggak buat masa ini.',
-            'info'
-        );
+    // TERTUNGGAK DAN TARIKH TERDEKAT DIDAHULUKAN
+    events.sort((a, b) => a.days - b.days);
+
+    // PAPARAN JIKA TIADA JADUAL
+    if (events.length === 0) {
+
+        container.innerHTML = `
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-8 text-center">
+
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-white text-slate-400 flex items-center justify-center text-2xl mb-3">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+
+                <h4 class="font-heading font-bold text-navy-950 text-sm">
+                    Belum Ada Jadual
+                </h4>
+
+                <p class="text-xs text-slate-500 mt-2">
+                    Jadual penyelenggaraan dan PUSPAKOM akan dipaparkan di sini.
+                </p>
+
+            </div>
+        `;
+
         return;
     }
 
-    // PILIH TARIKH TERTUNGGAK PALING HAMPIR
-    overdue.sort((a, b) => b.days - a.days);
+    events.forEach(ev => {
 
-    const dateStr = overdue[0].date;
+        let statusLabel = '';
+        let statusText = '';
+        let statusClass = '';
+        let statusColor = '';
 
-    const [year, month, day] =
-        dateStr.split('-').map(Number);
+        // STATUS BERDASARKAN TARIKH
+        if (ev.days < 0) {
 
-    // BUKA BULAN YANG BETUL
-    currentCalendarDate = new Date(year, month - 1, 1);
+            statusLabel = 'Tertunggak';
+            statusText =
+                `Lewat ${Math.abs(ev.days)} hari`;
 
-    // PAPAR KALENDAR ASAL
-    renderCalendar();
+            statusClass =
+                'bg-red-100 text-red-700 border-red-200';
 
-    // BUKA MAKLUMAT TARIKH DIPILIH
-    selectCalendarDate(dateStr);
+            statusColor = 'text-red-700';
 
-    // TANDAKAN KOTAK TARIKH MERAH
-    const firstDayIndex =
-        new Date(year, month - 1, 1).getDay();
+        } else if (ev.days === 0) {
 
-    const grid =
-        document.getElementById('calendarGridContainer');
+            statusLabel = 'Hari Ini';
+            statusText = 'Tindakan diperlukan hari ini';
 
-    const cell =
-        grid.children[7 + firstDayIndex + day - 1];
+            statusClass =
+                'bg-orange-100 text-orange-700 border-orange-200';
 
-    if (cell) {
-        cell.classList.remove('bg-white');
+            statusColor = 'text-orange-700';
 
-        cell.classList.add(
-            'bg-red-50',
-            'ring-2',
-            'ring-red-500',
-            'ring-inset'
-        );
-    }
+        } else if (ev.days <= 7) {
 
-    // SKROL TERUS KE BAHAGIAN KALENDAR
-    document.getElementById('calendarMonthTitle')
-        .scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
+            statusLabel = 'Segera';
+            statusText = `Dalam ${ev.days} hari`;
+
+            statusClass =
+                'bg-amber-100 text-amber-800 border-amber-200';
+
+            statusColor = 'text-amber-700';
+
+        } else if (ev.days <= 30) {
+
+            statusLabel = 'Akan Datang';
+            statusText = `Dalam ${ev.days} hari`;
+
+            statusClass =
+                'bg-blue-100 text-blue-700 border-blue-200';
+
+            statusColor = 'text-blue-700';
+
+        } else {
+
+            statusLabel = 'Berjadual';
+            statusText = `Dalam ${ev.days} hari`;
+
+            statusClass =
+                'bg-emerald-100 text-emerald-700 border-emerald-200';
+
+            statusColor = 'text-emerald-700';
+        }
+
+        // WARNA MENGIKUT JENIS AKTIVITI
+        const typeStyles = {
+
+            'Minyak Hitam': {
+                icon: 'fa-droplet',
+                color: 'bg-blue-50 text-blue-700 border-blue-200'
+            },
+
+            'Minyak Gear': {
+                icon: 'fa-gears',
+                color: 'bg-emerald-50 text-emerald-700 border-emerald-200'
+            },
+
+            'PUSPAKOM': {
+                icon: 'fa-shield-halved',
+                color: 'bg-amber-50 text-amber-800 border-amber-200'
+            }
+
+        };
+
+        const style = typeStyles[ev.type];
+
+        // FORMAT TARIKH MALAYSIA
+        const dateParts = ev.date.split('-');
+
+        const formattedDate =
+            dateParts.length === 3
+                ? dateParts.reverse().join('/')
+                : ev.date;
+
+        // CIPTA KAD BAHARU
+        const card = document.createElement('div');
+
+        card.className =
+            'min-w-0 rounded-2xl border border-slate-200 bg-white p-3 sm:p-4 shadow-sm transition-all hover:shadow-md';
+
+        card.innerHTML = `
+
+            <!-- MAKLUMAT AMBULANS -->
+            <div class="flex flex-wrap items-start justify-between gap-3">
+
+                <div class="flex items-start gap-3 min-w-0 flex-1">
+
+                    <div class="w-11 h-11 shrink-0 rounded-xl bg-navy-950 text-gold-400 flex items-center justify-center text-lg">
+
+                        <i class="fa-solid fa-truck-medical"></i>
+
+                    </div>
+
+                    <div class="min-w-0 flex-1">
+
+                        <h4 data-sjam="reg"
+                            class="font-heading font-bold text-navy-950 text-base break-words">
+                        </h4>
+
+                        <p data-sjam="model"
+                            class="text-xs text-slate-500 mt-1 leading-relaxed break-words">
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span data-sjam="badge"
+                    class="inline-flex items-center rounded-lg border px-2.5 py-1 text-[11px] font-bold ${statusClass}">
+                </span>
+
+            </div>
+
+            <!-- MAKLUMAT JADUAL -->
+            <div class="bg-slate-50 rounded-xl p-3 mt-4 space-y-3">
+
+                <div class="flex items-center justify-between gap-2">
+
+                    <span class="text-xs text-slate-500">
+                        Jenis Aktiviti
+                    </span>
+
+                    <span class="inline-flex items-center gap-1.5 rounded-lg border px-2 py-1 text-[11px] font-semibold ${style.color}">
+
+                        <i class="fa-solid ${style.icon}"></i>
+
+                        <span data-sjam="type"></span>
+
+                    </span>
+
+                </div>
+
+                <div class="border-t border-slate-200"></div>
+
+                <div class="flex items-center justify-between gap-2">
+
+                    <span class="text-xs text-slate-500">
+                        Tarikh Dijadualkan
+                    </span>
+
+                    <span data-sjam="date"
+                        class="text-xs font-bold text-navy-950 tabular-nums">
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- STATUS KIRAAN HARI -->
+            <div class="flex items-center gap-2 mt-3 text-xs font-semibold ${statusColor}">
+
+                <i class="fa-solid fa-clock"></i>
+
+                <span data-sjam="remaining"></span>
+
+            </div>
+
+        `;
+
+        // MASUKKAN MAKLUMAT REKOD
+        card.querySelector('[data-sjam="reg"]')
+            .textContent = ev.regNo || '-';
+
+        card.querySelector('[data-sjam="model"]')
+            .textContent = ev.model || '-';
+
+        card.querySelector('[data-sjam="badge"]')
+            .textContent = statusLabel;
+
+        card.querySelector('[data-sjam="type"]')
+            .textContent = ev.type;
+
+        card.querySelector('[data-sjam="date"]')
+            .textContent = formattedDate;
+
+        card.querySelector('[data-sjam="remaining"]')
+            .textContent = statusText;
+
+        container.appendChild(card);
+
+    });
 
 }
 
@@ -4371,4 +4379,5 @@ window.savePuspakom = async function(event) {
 </script>
 </body>
 </html>
+
 
