@@ -132,7 +132,38 @@ display: block !important;
     #sidebar.sidebar-collapsed {
         display: none !important;
     }
-}    
+}   
+
+
+/* KALENDAR INTERAKTIF - PAPARAN TELEFON SAHAJA */
+@media screen and (max-width: 639px) {
+
+    /* Pastikan 7 lajur muat pada skrin */
+    #calendarGridContainer {
+        width: 100%;
+        min-width: 0;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+
+    /* Elakkan lajur menjadi terlalu lebar */
+    #calendarGridContainer > div {
+        min-width: 0;
+    }
+
+    /* Saiz nama hari */
+    #calendarGridContainer > div:nth-child(-n+7) {
+        font-size: 9px;
+        padding: 8px 1px;
+    }
+
+    /* Saiz kotak tarikh pada telefon */
+    #calendarGridContainer > div:nth-child(n+8) {
+        min-height: 64px;
+        padding: 4px;
+    }
+
+}
+ 
 </style>
 </head>
 <body class="bg-navy-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
@@ -425,9 +456,11 @@ display: block !important;
 
 </div>
 
+
 <!-- TAB 2: SMART INTERACTIVE CALENDAR -->
-                    <div id="tab-calendar" class="tab-content hidden space-y-6">
-                        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+<div id="tab-calendar" class="tab-content hidden space-y-6">
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-3 sm:p-6">
+
 
 <!-- Calendar Controls Header -->
                             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
@@ -451,7 +484,8 @@ display: block !important;
                             </div>
 
 <!-- Interactive Calendar Grid -->
-                            <div class="grid grid-cols-7 min-w-[630px] sm:min-w-0 gap-px bg-slate-200 rounded-xl overflow-hidden border border-slate-200" id="calendarGridContainer">
+                            
+<div class="grid grid-cols-7 w-full min-w-0 gap-px bg-slate-200 rounded-xl overflow-hidden border border-slate-200" id="calendarGridContainer">
                                 <!-- Days Header -->
                                 <div class="bg-slate-100 py-2.5 text-center text-xs font-bold text-slate-600">Ahad</div>
                                 <div class="bg-slate-100 py-2.5 text-center text-xs font-bold text-slate-600">Isnin</div>
@@ -2490,5 +2524,3 @@ window.savePuspakom = async function(event) {
 </script>
 </body>
 </html>
-
-
