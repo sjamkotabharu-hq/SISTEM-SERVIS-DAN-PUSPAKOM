@@ -3,7 +3,7 @@
   "short_name": "SJAM Servis",
   "description": "Sistem pengurusan servis dan pemeriksaan PUSPAKOM ambulans SJAM Kota Bharu.",
   "lang": "ms",
-  "id": "./",
+  "id": "/SISTEM-SERVIS-DAN-PUSPAKOM/",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
