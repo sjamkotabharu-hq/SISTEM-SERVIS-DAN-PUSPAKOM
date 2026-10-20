@@ -2289,7 +2289,8 @@ if (amb.gearOilNextDate === dateStr) {
                                     <h5 class="font-bold text-navy-950 text-sm mt-0.5">${amb.regNo} (${amb.model})</h5>
                                     <p class="text-xs text-slate-600">Lokasi: ${amb.location}</p>
                                 </div>
-                                <button onclick="openEditAmbulance('${amb.id}')" class="text-xs bg-gold-600 hover:bg-gold-700 text-navy-950 px-3 py-1.5 rounded-lg">Edit</button>
+                                <button 
+<button onclick="openAddPuspakomModal('${amb.id}')" class="text-xs bg-gold-600 hover:bg-gold-700 text-navy-950 px-3 py-1.5 rounded-lg">Edit</button>
                             </div>
                         `;
                     }
@@ -4370,5 +4371,4 @@ window.savePuspakom = async function(event) {
 </script>
 </body>
 </html>
-
 
