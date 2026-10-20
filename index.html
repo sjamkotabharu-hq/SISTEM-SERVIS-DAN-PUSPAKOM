@@ -248,8 +248,41 @@ display: block !important;
                         </div>
 
 <!-- JAM DAN TARIKH DASHBOARD UTAMA -->
-<div class="no-print bg-gradient-to-r from-navy-900 to-navy-950 text-white rounded-2xl shadow-lg p-5 sm:p-6">
+<div class="no-print overflow-hidden rounded-2xl shadow-lg bg-white border border-slate-200">
 
+    <!-- GAMBAR UTAMA -->
+    <img
+        src="./ambulans-puspakom-banner.png"
+        alt="Ambulans SJAM Kota Bharu di pusat pemeriksaan PUSPAKOM"
+        class="w-full h-56 sm:h-72 object-cover"
+    >
+
+    <!-- LAPISAN MAKLUMAT MASA -->
+    <div class="bg-gradient-to-r from-navy-900 to-navy-950 text-white p-5 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8">
+
+            <!-- JAM DIGITAL -->
+            <div id="sjamLiveClock"
+                 class="font-heading font-bold text-4xl sm:text-5xl tracking-wide tabular-nums">
+                --:--:--
+            </div>
+
+            <!-- TARIKH DAN ZON WAKTU -->
+            <div>
+                <h3 id="sjamLiveDate"
+                    class="font-heading font-semibold text-lg sm:text-xl">
+                    Memuatkan tarikh...
+                </h3>
+
+                <p class="text-xs sm:text-sm text-slate-400 mt-1">
+                    Zon Waktu: Asia/Kuala_Lumpur (MYT)
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
 <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8">
 
 <!-- JAM DIGITAL -->
@@ -2424,5 +2457,3 @@ window.savePuspakom = async function(event) {
 </script>
 </body>
 </html>
-
-
