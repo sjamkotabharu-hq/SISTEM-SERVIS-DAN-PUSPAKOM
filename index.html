@@ -1720,20 +1720,36 @@ function saveData() {
         }
 
         function renderAll() {
-            renderDashboardStats();
-            renderSmartCountdown();
-            renderCalendar();
-renderCalendarReminderPanel();
-renderAmbulanceTable();
-renderAmbulanceMobileCards();
-renderMaintenanceTable();
-renderMaintenanceMobileCards();
-renderPuspakomTable();
-renderPuspakomMobileCards();
-            renderAnalytics();
-            populateAmbulanceDropdowns();
-        }
 
+    renderDashboardStats();
+
+    renderSmartCountdown();
+
+    renderCalendar();
+
+    // SEMAK KEWUJUDAN FUNGSI SEBELUM DIPANGGIL
+    // ELAK PAPARAN LAIN TERHENTI
+    if (typeof renderCalendarReminderPanel === 'function') {
+        renderCalendarReminderPanel();
+    }
+
+    // PENGURUSAN AMBULANS
+    renderAmbulanceTable();
+    renderAmbulanceMobileCards();
+
+    // REKOD PENYELENGGARAAN
+    renderMaintenanceTable();
+    renderMaintenanceMobileCards();
+
+    // PEMANTAUAN PUSPAKOM
+    renderPuspakomTable();
+    renderPuspakomMobileCards();
+
+    // ANALISIS DAN SENARAI PILIHAN
+    renderAnalytics();
+    populateAmbulanceDropdowns();
+
+}
         function calculateDaysRemaining(dateString) {
             const target = new Date(dateString);
             const today = new Date();
